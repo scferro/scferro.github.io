@@ -1,8 +1,8 @@
 ---
-name: 3D Object Detection and Pose Estimation
-tools: [C++, ROS, Pytorch, PCL, OpenCV]
-image: https://jiasenzheng.github.io/assets/detection.gif
-description: Designed a computer vision setup and implemented software to detect objects and estimate their poses in 3D space.
+name: Pour Over Coffee Using a 7DOF Robot Arm
+tools: [ROS2, Python, OpenCV, Moveit]
+image: https://scferro.github.io/assets/XXXXXXX.gif
+description: Programmed a Franka Emika 7DOF robot arm to brew a cup of pour over coffee from scratch.
 ---
 
 # Point Cloud Object Detection and Pose Estimation
@@ -20,6 +20,10 @@ description: Designed a computer vision setup and implemented software to detect
 <br>
 
 ### Hardware
+* Franka Emika
+
+Intel realsense L515 uses a solid-state Lidar to sense depth. The Lidar can provide organized point clouds. It also has an RGB camera which is calibrated with the Lidar.
+
 * Intel Realsense Lidar L515
 
 Intel realsense L515 uses a solid-state Lidar to sense depth. The Lidar can provide organized point clouds. It also has an RGB camera which is calibrated with the Lidar.

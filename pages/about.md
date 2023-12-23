@@ -8,7 +8,7 @@ weight: 2
 # **About Me**
 <br>
 <font size="+1">
-Hi! I am currently a m
+Hi! I am currently student in the Northwestern Master of Science in Robotics (MSR) program. I am interested in computer vision, navigation, SLAM, and machine learning as they are applied to autonomous vehicles and mobile robots, as well as the usage of legged and bipedal robots in human-centric environments.
 </font>
 
 <!-- <div class="row">

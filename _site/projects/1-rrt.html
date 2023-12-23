@@ -21,12 +21,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="About">
-  <meta property="og:description" content="Hello">
-  <meta property="og:image" content="">
+  <meta property="og:title" content="Rapidly-Exploring Random Tree">
+  <meta property="og:description" content="Created a program to find a path between two points points while avoiding obstacles using an RRT.">
+  <meta property="og:image" content="https://scferro.github.io/assets/XXXXXXX.gif">
 
-  <title>About</title>
-  <meta name="description" content="Hello">
+  <title>Rapidly-Exploring Random Tree</title>
+  <meta name="description" content="Created a program to find a path between two points points while avoiding obstacles using an RRT.">
 
   <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
 
@@ -60,9 +60,9 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav ml-auto"><a class="nav-item nav-link " href="/projects/">Projects</a>
+    <div class="navbar-nav ml-auto"><a class="nav-item nav-link active" href="/projects/">Projects</a>
 
-      <a class="nav-item nav-link active" href="/about/">About</a>
+      <a class="nav-item nav-link " href="/about/">About</a>
 
       <a class="nav-item nav-link " href="/contact/">Contact</a>
 
@@ -76,116 +76,76 @@
 
 </nav>
     <div class="col-lg-10 mx-auto mt-5 markdown-body">
-  <h1 id="about-me"><strong>About Me</strong></h1>
+  <h1 id="rapidly-exploring-random-tree">Rapidly-Exploring Random Tree</h1>
 <p><br /></p>
-<font size="+1">
-Hi! I am currently student in the Northwestern Master of Science in Robotics (MSR) program. I am interested in computer vision, navigation, SLAM, and machine learning as they are applied to autonomous vehicles and mobile robots, as well as the usage of legged and bipedal robots in human-centric environments.
-</font>
 
-<!-- <div class="row">
-<div class="col-lg">
+<h3 id="overview">Overview</h3>
+<p><br />
+The Rapidly-Exploring Random Tree (RRT) is a widely used algorithm in the field of robotics and motion planning. Introduced by Steven M. LaValle in 1998, RRT is designed to efficiently explore and navigate high-dimensional spaces, making it particularly suited for complex environments. The algorithm incrementally builds a tree structure by randomly sampling configuration points and connecting them to the existing tree through locally optimal paths. This approach allows RRT to quickly explore the configuration space, making it well-suited for real-time applications. RRT has been utilized in robotics for tasks such as motion and path planning, contributing to the improvement of autonomous robots’ ability to navigate and make decisions in complex environments.</p>
 
-  <h2 class="mb-3">Programming Languages</h2>
+<h3 id="usage-and-results">Usage and Results</h3>
+<p><br />
+The start and goal locations can either be randomly generated or specified by the user. Similarly, circular obstacles can either be randomly generated or manually placed by entering coordinates for the center point and a radius of the obstacle. Below is an example of the algorithm being used on randomly generated obstacles.</p>
 
-  
+<p><img src="http://localhost:4000/assets/rrt_2.png" /></p>
 
-  <div class="row justify-content-between align-items-center">
-    <div class="col-10">
-      <p class="mb-1">Python</p>
-    </div>
-    <div class="col-2 text-right">
-      <p class="mb-1 text-muted">90%</p>
-    </div>
-  </div>
+<p>Obstacles can also be specified using a binary image file. Black pixels are considered to be occupied by obstacles, while white pixels are considered empty. Circular obstacles are created to occupy any black pixels in the image, with a higher density of smaller obstacles used for any pixels that are border an empty white pixel. Below is the RRT navigating around the Northwestern “N”.</p>
 
-  <div class="progress mb-4 bg-themed" style="height: 8px;">
-    <div class="progress-bar bg-danger wow animated slideInLeft"
-      data-wow-delay="0.05"
-      role="progressbar"
-      style="width: 90%;"
-      aria-valuenow="90"
-      aria-valuemin="0"
-      aria-valuemax="100">
-    </div>
-  </div>
+<p><img src="http://localhost:4000/assets/rrt_4.png" /></p>
 
-  
+<h3 id="rrt-algorithm">RRT Algorithm</h3>
+<p>For this project, the following RRT algorithm was used to navigate from a start point to a goal point while avoiding obstacles.</p>
 
-  <div class="row justify-content-between align-items-center">
-    <div class="col-10">
-      <p class="mb-1">Matlab</p>
-    </div>
-    <div class="col-2 text-right">
-      <p class="mb-1 text-muted">75%</p>
-    </div>
-  </div>
+<p>Input:</p>
 
-  <div class="progress mb-4 bg-themed" style="height: 8px;">
-    <div class="progress-bar bg-info wow animated slideInLeft"
-      data-wow-delay="0.1"
-      role="progressbar"
-      style="width: 75%;"
-      aria-valuenow="75"
-      aria-valuemin="0"
-      aria-valuemax="100">
-    </div>
-  </div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>q_start: The start point
 
-  
+q_goal: The point that the tree is attempting to reach
 
-  <div class="row justify-content-between align-items-center">
-    <div class="col-10">
-      <p class="mb-1">C++</p>
-    </div>
-    <div class="col-2 text-right">
-      <p class="mb-1 text-muted">70%</p>
-    </div>
-  </div>
+K: Number of vertices in RRT
 
-  <div class="progress mb-4 bg-themed" style="height: 8px;">
-    <div class="progress-bar bg-secondary wow animated slideInLeft"
-      data-wow-delay="0.15"
-      role="progressbar"
-      style="width: 70%;"
-      aria-valuenow="70"
-      aria-valuemin="0"
-      aria-valuemax="100">
-    </div>
-  </div>
+K_max: Maximum number of vertices in RRT
 
-  
+Δ: Incremental distance
 
-  <div class="row justify-content-between align-items-center">
-    <div class="col-10">
-      <p class="mb-1">C</p>
-    </div>
-    <div class="col-2 text-right">
-      <p class="mb-1 text-muted">70%</p>
-    </div>
-  </div>
+D: The planning domain
+</code></pre></div></div>
 
-  <div class="progress mb-4 bg-themed" style="height: 8px;">
-    <div class="progress-bar bg-primary wow animated slideInLeft"
-      data-wow-delay="0.2"
-      role="progressbar"
-      style="width: 70%;"
-      aria-valuenow="70"
-      aria-valuemin="0"
-      aria-valuemax="100">
-    </div>
-  </div>
+<p>Output:</p>
 
-  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>G: the RRT
+</code></pre></div></div>
 
-</div>
-<div class="col-lg">
+<p>Algorithm:</p>
 
-  <h2 class="mb-3">Engineering Skills</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Initialize G with q_start
 
-  
+WHILE K &lt; K_max AND path to q_goal is not found:
 
-</div>
-</div> -->
+    - q_rand ← RANDOM_POINT(D)
+
+    - q_near ← NEAREST_VERTEX(q_rand, G)
+
+    - q_new ← NEW_VERTEX(q_near, q_rand, Δ)
+
+    - IF q_new is NOT located within an obstacle:
+
+        - Add vertex q_new to G
+
+        - Add an line segment between q_near and q_new in G
+
+        - Check if straight line path from q_new to q_goal is obstacle free
+        
+        - K = K + 1
+
+return G
+</code></pre></div></div>
+
+<p>RANDOM_POINT randomly selects a point within the domain D.</p>
+
+<p>NEAREST_VERTEX selects the vertex in G that is closest to the random point q_rand</p>
+
+<p>NEW_VERTEX generates a new vertex in the tree by moving a distance Δ from one vertex towards another.</p>
 
 </div>
   </main>
