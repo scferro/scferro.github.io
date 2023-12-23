@@ -1,88 +1,65 @@
 ---
 name: Pour Over Coffee Using a 7DOF Robot Arm
 tools: [ROS2, Python, OpenCV, Moveit]
-image: https://scferro.github.io/assets/XXXXXXX.gif
-description: Programmed a Franka Emika 7DOF robot arm to brew a cup of pour over coffee from scratch.
+image: https://scferro.github.io/assets/coffee.gif
+description: Programmed a Franka Emika 7DOF robot arm to brew a cup of pour over coffee.
 ---
 
-# Point Cloud Object Detection and Pose Estimation
-<br>
-### Objective
-<br>
-**[Shape-Based Remote Manipulation](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2221571&HistoricalAwards=false) (NSF)**: We are building an operating interface coupled with a manipulator that promises communication across the distance barrier. 
-<br><br>
-**My Focus**: As the first stage of this project, I am responsible for developing a perception system to sense the manipulator’s environment.
-<br><br>
-**Goal**: This project aims to design a computer vision setup and implement software to detect objects and estimate their poses in 3D space.
-<br>
-### Video demo
-{% include elements/video.html id="uvhC8gluA9o" %}
-<br>
+# ME495 Final Project - Group 1 - Botrista
 
-### Hardware
-* Franka Emika
+<iframe width="560" height="315" src="https://www.youtube.com/embed/INRJ8Y_SD4U?si=X1NxuWG7hQWI9v2w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-Intel realsense L515 uses a solid-state Lidar to sense depth. The Lidar can provide organized point clouds. It also has an RGB camera which is calibrated with the Lidar.
+## Authors: 
+Stephen Ferro, Anuj Natraj, Carter DiOrio, Kyle Wang, and Jihai Zhao
 
-* Intel Realsense Lidar L515
+## Description: 
+A collection of ROS2 packages to drive the Emika Franka robot arm to brew a cup of pour over coffee. 
 
-Intel realsense L515 uses a solid-state Lidar to sense depth. The Lidar can provide organized point clouds. It also has an RGB camera which is calibrated with the Lidar.
+## Quickstart Instructions:
+1. Use the command "git clone git@github.com:ME495-EmbeddedSystems/Botrista.git" in the terminal to clone the repositiory into the 'src' directory of a new ROS2 workspace.
+2. Build and source the workspace.
+3. After building and sourcing the workspace, launch rviz and the required nodes using "ros2 launch botrista botrista.launch.py" .
+4. To start the coffee-making routine, place a white cup in the purple cup holder in front of the robot. The robot will detect the cup and beign making coffee.
 
-### Pipeline
-<br>
-<img src="{{ site.url }}{{ site.baseurl }}/assets/det_pipeline.png"/>
-<br>
+## Nodes:
+### botrista Package:
+- camera_localizer: localizes the d435 and d405 cameras and publishes transforms for april tags seen by the cameras from the robot base
+- coffee_grounds: controls the actions for picking up and dumping the coffee scoop
+- cup_detection: handles detection of the coffee cup in the cup holder and triggers the rest of the routine. also publishes a transform to the top of the coffee cup
+- delay_node: handles the delay service which is used to pause the robot for a specified time at certain points in the routine
+- grasp_node: offers the grasp_process action, which is used to grap the "standard" handle used for the kettle, pot, and filter
+- handle_detector: tracks the blue and green tape on the handles of the objects using the d405 camera and publishes a tf for the object handle
+- kettle: handles action for picking up, pouring, and placing the kettle
+- pick_filter: offers the action to pick up the coffee filter
+- pot: handles action for picking up, pouring, and placing the coffee pot
+- pouring: offers the pour action, which is used by the kettle to create spiral motions
+- run_botrista: the main node which offers the make_coffee action
+### moveit_wrapper package
+- grasp_planner: handles planning and execution of grasp actions
+- moveitapi: a wrapper class for sending moveit commands to a robot like the Franka
 
-### software
-The software of this project can be explained in two stages based on the two ROS nodes I have in the project:
-* Inference server
-* Perception core
+## Launchfiles:
+- botrista.launch.py: the main launchfile to launch botrista. It launches all the nodes listed above except camera_localizer, as well as running the two launch files below. Once launched, the robot is ready to execture the make_coffee action once it detects a cup.
+- open_franka.launch.xml: Launches moveit and RViz for the Franka arm.
+- realsense.launch.py: Launches both the d435i and the d405, the april tag node, and the camera_localizer node.
 
-**Inference server**<br>
-The inference server is a ROS node that runs a deep learning model (CNN) to detect objects in the image space. The inference server is implemented in Python using [Detectron2](https://github.com/facebookresearch/detectron2) and Pytorch as the deep learning framework. For the use case of this project, a custom dataset is created to train the model. Mask-RCNN is used as the model architecture since we need to implement instance segmentation. The model was then trained with 100 self-labeled images with an ontology of a "cheez-it" box. The labeled images are shown below:
-<br>
-<img src="{{ site.url }}{{ site.baseurl }}/assets/annotation_results.gif"/>
-<br>
-The images are annotated on an open-sourced platform, [CVAT](https://github.com/opencv/cvat). CVAT provides many tools to accelerate the labeling processes and improve the qualities, such as machine learning models. 
-<br>
-The model was then trained using Detectron2 with 100 labeled images. The inference results are shown below:
-<br>
-<img src="{{ site.url }}{{ site.baseurl }}/assets/instance_segmentation.gif"/>
-<br>
-The inference server subscribes to the image topic and computes the target object masks. The inference server then publishes the masks to the perception core node.
+## 'make_coffee' Routine High Level Overview:
+This system is essentially a series of service and action calls which cause the robot to brew coffee when called in order.
+1. The cup_detection node wait until it detects an empty cup placed in the detection area, then publishes a message on the 'coffee_start' topic, which cuases the run_botrista node to start the routine
+2. Picks up the Filter from filter stand using the pick_filter action
+3. Places the Filter on the Pot using the place_filter_in_pot action
+4. Pick up a full scoop of coffee gournds and dump them in filter. This is all handled by the scoop action
+5. Pick up Kettle with the pick_kettle action
+6. Pour water from kettle using the pour_action action
+7. Place Kettle back on kettle stand w ith the place_kettle action
+8. Wait for coffee grounds to soak using the delay service
+9. Pick up Filter from the Pot using the pick_filter_in_pot action
+10. Place Filter on filter stand (place_filter action)
+11. Pick up Pot from pot stand (pick_pot action)
+12. Pour Coffee (pour_pot action)
+13. Put the Pot back on pot stand (place_pot action)
 
-**Perception core**<br>
-The perception core is a ROS node that performs the following tasks:
-* Receives both the point cloud from the LiDAR and the image from the RGB camera
-* Detects the table in point cloud data and removes it
-* Denoises, downsamples, and clusters the point cloud data to create a foreground mask
-* Receives the target object masks from the inference server and gets a inference mask
-* merge the foreground mask and the inference mask to get a final mask
-* Performs oriented bounding box detection and pose estimation on the final mask with a state machine
-
-The perception core is implemented in C++ using ROS. The node uses PCL for the point cloud process and OpenCV for the image process. The organized point cloud acquired from the realsense Lidar helped significantly reduce the perception core's runtime. The algorithms in the node were implemented to keep the organized point cloud using a customized data structure, **OrderedCloud**. Moreover, some algorithms were implemented in image space to reduce the runtime, such as **denoise**, **downsample**, and **cluster**. As a result, the node can be run efficiently with real-time performance. A state machine controls the detection and pose estimation processes based on the motion in the image space.
-
-The below image shows the table removal process:
-<br>
-<img src="{{ site.url }}{{ site.baseurl }}/assets/background_remover.gif"/>
-<br>
-
-The below image shows the colorized point cloud clusters after denoising, downsampling, and clustering:
-<br>
-<img src="{{ site.url }}{{ site.baseurl }}/assets/cluster.gif"/>
-<br>
-
-The below image shows the CAD model replacement of the target objects:
-<br>
-<img src="{{ site.url }}{{ site.baseurl }}/assets/detection.gif"/>
-<br>
-
-
-### Future Scope 
-* Implement a faster CNN model for instance segmentation such as [YOLACT-EDGE](https://github.com/haotian-liu/yolact_edge) to reduce the inference time
-* Annotate more images to train a more robust and accurate model
-* Annotate the model based on the cropped images to reduce the inference time
-* Call the inference server with cropped images to reduce the inference time
-* Implement a more robust and accurate pose estimation algorithm, such as point cloud registration
-* Multi-thread CPU implementation on the perception core node to reduce the runtime
-* Implement some OpenCV and PCL algorithms in GPU to reduce the runtime
+## Lessons Learned and Future Work:
+- The biggest issues we encoutered with this project was moveit getting the robot into configurations that it could not get itself out of. This happened most frequently with motions that had a lot of path or goal constraints, such as moving the scoop to the pot or pouring the pot into the cup. We were able to work around these issues largely by tuning the constraints and by inserting more known intermediate positions for the robot to go to before reaching the goal pose. One idea to further improve this issue would be to have moveit find multiple paths to the goal, then choose the best option, rather than just picking the first solution it finds with RRT. Perhaps it would also be possible to write code allow moveit to take into account future commands as well as the current command. This could allow it to plan a path from which it does not get stuck. 
+- Another issue we encountered was the weight of the kettle. Though we were somewhat close to the Franka's payload limit, we expected that it should have been able to carry more water than it was able too. If we over filled the kettle, the robot would sometimes fail to pick up the kettle because it thought it had collieded with something. Perhaps we could slightly increase payload by further tuning the Franka payload variables.
+- Additionally, there are some additional action the robot could complete the would make for a more full-featured demo. We wanted the robot to be able to scoop it's own coffee grounds, turn the kettle on and boil water by itself, and throw away old coffee grounds. With these features, as long as there were still coffee grounds in the jar and water in the kettle, the demo would immediatly be able to run again after making a cup of coffee. 

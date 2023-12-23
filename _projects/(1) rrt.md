@@ -1,7 +1,7 @@
 ---
 name: Rapidly-Exploring Random Tree
 tools: [Python, Path Planning]
-image: https://scferro.github.io/assets/XXXXXXX.gif
+image: https://scferro.github.io/assets/rrt_2.png
 description: Created a program to find a path between two points points while avoiding obstacles using an RRT. 
 ---
 
@@ -9,11 +9,9 @@ description: Created a program to find a path between two points points while av
 <br>
 
 ### Overview
-<br>
 The Rapidly-Exploring Random Tree (RRT) is a widely used algorithm in the field of robotics and motion planning. Introduced by Steven M. LaValle in 1998, RRT is designed to efficiently explore and navigate high-dimensional spaces, making it particularly suited for complex environments. The algorithm incrementally builds a tree structure by randomly sampling configuration points and connecting them to the existing tree through locally optimal paths. This approach allows RRT to quickly explore the configuration space, making it well-suited for real-time applications. RRT has been utilized in robotics for tasks such as motion and path planning, contributing to the improvement of autonomous robots' ability to navigate and make decisions in complex environments.
 
-### Usage and Results
-<br>
+### Usage and Output
 The start and goal locations can either be randomly generated or specified by the user. Similarly, circular obstacles can either be randomly generated or manually placed by entering coordinates for the center point and a radius of the obstacle. Below is an example of the algorithm being used on randomly generated obstacles. 
 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/rrt_2.png"/>
@@ -23,6 +21,7 @@ Obstacles can also be specified using a binary image file. Black pixels are cons
 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/rrt_4.png"/>
 
+<br>
 
 ### RRT Algorithm
 For this project, the following RRT algorithm was used to navigate from a start point to a goal point while avoiding obstacles.
@@ -33,9 +32,9 @@ Input:
 
     q_goal: The point that the tree is attempting to reach
 
-    K: Number of vertices in RRT
+    K: Current number of vertices in RRT
 
-    K_max: Maximum number of vertices in RRT
+    K_max: Maximum allowed number of vertices in RRT
 
     Δ: Incremental distance
 
@@ -74,3 +73,8 @@ RANDOM_POINT randomly selects a point within the domain D.
 NEAREST_VERTEX selects the vertex in G that is closest to the random point q_rand
 
 NEW_VERTEX generates a new vertex in the tree by moving a distance Δ from one vertex towards another.
+
+
+<p class="text-center">
+{% include elements/button.html link="https://github.com/scferro/rrt_project" text="GitHub" %}
+</p>

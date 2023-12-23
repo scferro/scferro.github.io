@@ -23,7 +23,7 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Rapidly-Exploring Random Tree">
   <meta property="og:description" content="Created a program to find a path between two points points while avoiding obstacles using an RRT.">
-  <meta property="og:image" content="https://scferro.github.io/assets/XXXXXXX.gif">
+  <meta property="og:image" content="https://scferro.github.io/assets/rrt_2.png">
 
   <title>Rapidly-Exploring Random Tree</title>
   <meta name="description" content="Created a program to find a path between two points points while avoiding obstacles using an RRT.">
@@ -80,18 +80,18 @@
 <p><br /></p>
 
 <h3 id="overview">Overview</h3>
-<p><br />
-The Rapidly-Exploring Random Tree (RRT) is a widely used algorithm in the field of robotics and motion planning. Introduced by Steven M. LaValle in 1998, RRT is designed to efficiently explore and navigate high-dimensional spaces, making it particularly suited for complex environments. The algorithm incrementally builds a tree structure by randomly sampling configuration points and connecting them to the existing tree through locally optimal paths. This approach allows RRT to quickly explore the configuration space, making it well-suited for real-time applications. RRT has been utilized in robotics for tasks such as motion and path planning, contributing to the improvement of autonomous robots’ ability to navigate and make decisions in complex environments.</p>
+<p>The Rapidly-Exploring Random Tree (RRT) is a widely used algorithm in the field of robotics and motion planning. Introduced by Steven M. LaValle in 1998, RRT is designed to efficiently explore and navigate high-dimensional spaces, making it particularly suited for complex environments. The algorithm incrementally builds a tree structure by randomly sampling configuration points and connecting them to the existing tree through locally optimal paths. This approach allows RRT to quickly explore the configuration space, making it well-suited for real-time applications. RRT has been utilized in robotics for tasks such as motion and path planning, contributing to the improvement of autonomous robots’ ability to navigate and make decisions in complex environments.</p>
 
-<h3 id="usage-and-results">Usage and Results</h3>
-<p><br />
-The start and goal locations can either be randomly generated or specified by the user. Similarly, circular obstacles can either be randomly generated or manually placed by entering coordinates for the center point and a radius of the obstacle. Below is an example of the algorithm being used on randomly generated obstacles.</p>
+<h3 id="usage-and-output">Usage and Output</h3>
+<p>The start and goal locations can either be randomly generated or specified by the user. Similarly, circular obstacles can either be randomly generated or manually placed by entering coordinates for the center point and a radius of the obstacle. Below is an example of the algorithm being used on randomly generated obstacles.</p>
 
 <p><img src="http://localhost:4000/assets/rrt_2.png" /></p>
 
 <p>Obstacles can also be specified using a binary image file. Black pixels are considered to be occupied by obstacles, while white pixels are considered empty. Circular obstacles are created to occupy any black pixels in the image, with a higher density of smaller obstacles used for any pixels that are border an empty white pixel. Below is the RRT navigating around the Northwestern “N”.</p>
 
 <p><img src="http://localhost:4000/assets/rrt_4.png" /></p>
+
+<p><br /></p>
 
 <h3 id="rrt-algorithm">RRT Algorithm</h3>
 <p>For this project, the following RRT algorithm was used to navigate from a start point to a goal point while avoiding obstacles.</p>
@@ -102,9 +102,9 @@ The start and goal locations can either be randomly generated or specified by th
 
 q_goal: The point that the tree is attempting to reach
 
-K: Number of vertices in RRT
+K: Current number of vertices in RRT
 
-K_max: Maximum number of vertices in RRT
+K_max: Maximum allowed number of vertices in RRT
 
 Δ: Incremental distance
 
@@ -146,6 +146,12 @@ return G
 <p>NEAREST_VERTEX selects the vertex in G that is closest to the random point q_rand</p>
 
 <p>NEW_VERTEX generates a new vertex in the tree by moving a distance Δ from one vertex towards another.</p>
+
+<p class="text-center">
+<a class="m-1 btn btn-outline-primary btn-2 " href="https://github.com/scferro/rrt_project">
+  GitHub
+</a>
+</p>
 
 </div>
   </main>
