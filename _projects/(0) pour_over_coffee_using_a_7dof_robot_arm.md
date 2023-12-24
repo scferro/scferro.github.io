@@ -1,6 +1,6 @@
 ---
 name: Pour Over Coffee Using a 7DOF Robot Arm
-tools: [ROS2, Python, OpenCV, Moveit]
+tools: [ROS2, Python, OpenCV, Moveit, 3D Printing]
 image: https://scferro.github.io/assets/coffee.gif
 description: Programmed a Franka Emika 7DOF robot arm to brew a cup of pour over coffee.
 ---
