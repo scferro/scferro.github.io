@@ -1,7 +1,7 @@
 ---
 name: Implementation and Assessment of a Particle Filter 
-tools: [Particle Filter, Python]
-image: https://scferro.github.io/assets/particle_filter_2.png
+tools: [OpenCV, Python, SIFT, Motion Estimation]
+image: https://jiasenzheng.github.io/assets/vo.gif
 description: Applied a particle filter to a robot dataset to improve the position estimate of the robot. 
 ---
 
