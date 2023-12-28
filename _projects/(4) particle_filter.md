@@ -21,7 +21,6 @@ Overall, the particle filter was successfully able to combine the odometry data 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/particle_filter_1.png"/>
 <img src="{{ site.url }}{{ site.baseurl }}/assets/particle_filter_2.png"/>
 <img src="{{ site.url }}{{ site.baseurl }}/assets/particle_filter_3.png"/>
-<img src="{{ site.url }}{{ site.baseurl }}/assets/particle_filter_4.png"/>
 
 ### Dead Reckoning Motion Model
 The dead reckoning position estimate based on simple trigonometry and physics. The inputs for the model are the linear velocity and angular velocity (omega) commands provided in the odometry data file, along with a time interval between commands. 
@@ -76,6 +75,7 @@ The outputs are the distance from the robot to the landmark and the heading of t
 
 
 ### Implementation of Particle Filter
+Below is an explanation of the basic operation of a particle filter. 
 
 1. First, an initial belief state is generated. In the particle filter, the belief state is comprised of a set of particles, X_t. Each particle represents a possible state of the robot. In this project, the state variables are the robot coordinates x and y and the orientation theta. The initial particle set can be generated using a uniform distribution across the entire workspace, a random distribution, or they can be generated based on the initial robot state, if it is known. The initial state is be called X_t−1. The number of particles (M) is specified as part of the filter design. 
 
@@ -85,6 +85,52 @@ X′_t.
 3. Then, the particle set is re-sampled based on the importance factors. From the particle set X′_t, particles are sampled randomly with the importance factors as weights (i.e. particles with high importance factors are more likely to be selected). The selected particles should be added to the new belief state X_t. There will be redundant particles, as particles with high importance factors will be sampled more than once. This new particle set should have a distribution with more particles in the most probable states as a result of this resampling step. This resampling is critical for estimating the robot's state successfully.  
 
 4. Finally, wait for a new measurement to repeat the process. X_t is now the current belief state is now. While waiting for a new measurement, X_t may still be updated based on inputs to the robot. In this project, the state of every particle in the belief state is updated between measurements based on the odometry input data provided between the measurements and using the motion model. When a new measurement z_t is collected, X_t becomes X_t−1 and the process repeats.  
+
+For this implementation, a few changes were made to the basic particle filter described above. In this filter, the filter generates a set of random initial particles when the first measurement is taken. The initial number of particles is specified in the tuning parameters; 200 initial particles was found to work well. These particles are all generated around the initial position of the robot. The x and y positions of the particles are generated using these equations. 
+
+    x_particle = (rand(-1,1) * initialSpread) + x_robot
+    y_particle = (rand(-1,1) * initialSpread) + y_robot
+
+Where rand(-1,1) represents a random number between –1 and 1. The variable initialSpread is the maximum x or y distance that the generated particle can be from the current position estimate. It is a tuning parameter specified by the user. An initial spread of 0.25 m was found to be optimal in this project. The theta angle of the particles is generated using the equation below.  
+
+    theta_particle = (rand(-1,1) * initialTurn) + theta_robot
+
+The variable initialTurn is the maximum change in the theta angle between the generated particle and the current position estimate. An initialTurn of π/8 radians was found to work well in this project. These variables are then added to the current belief state array. This is repeated until the full set of particles are generated. 
+
+When a measurement to a specified landmark is received, each particle is run through the measurement model described above, which outputs a distance and heading (phi) from each particle to the landmark measured. The position of the landmark in the global frame is known. To calculate the probability for each particle, the distance between the estimated position of the landmark relative to the particle and the landmark position measured by the robot are calculated using Pythagorean’s theorem. This distance is the error between the particle's estimate of the landmark position and the true landmark positions, and is used for calculating the probability each particle is correct. Smaller error values correspond with particles that are more likely to match the true state of the robot. The equations are shown below.
+
+    x_landmark_particle = dist_particle * cos(phi_particle)
+    y_landmark_particle = dist_particle * sin(phi_particle)
+    x_landmark_measured = dist_measured * cos(phi_measured)
+    y_landmark_measured = dist_measured * sin(phi_measured)
+    landmark_position_error = sqrt((x_landmark_measured - x_landmark_particle)**2 + (y_landmark_measured - y_landmark_particle)**2)
+
+The distance between the estimate and the measurement is then divided by a variable sigma. Sigma represents represents the uncertainty of measurements from the sensor, but it is treated as a tuning parameter within the context of this project. The distance estimate and sigma are used to calculate a z-score, which represents the number of standard deviations that the estimate is from the measurement. This can then be converted to an approximate probability using the following equations. 
+
+    zScore = landmark_position_error / sigma
+    probability = 2 * (0.5 * exp(-zScore**2 / 2))
+
+Once all the particles have probabilities calculated, the highest probability particles are selected. The number of particles to select is a tuning parameter; 30 was found to work well in this project. The average x and y positions and θ angle are calculated for the high probability particles. The probability for the average particle is also calculated based on the average probability of all the high probability particles. This average particle is then considered to be the new overall position estimate. 
+
+Next, the new particle set is generated. The number of particles is based on the probability of the high probability average particle. This means that when the model is more confident, fewer particles are created to improve compute time. When the model is less certain, more particles are generated to improve accuracy. The number of particles is calculated using the equation below. 
+
+    num_particles = (1 - prob_avg) * (particles_max - particles_min) + particles_min
+
+The minimum and maximum particles are tuning parameters; 100 and 500, respectively, have been found to work well. The variable particle count is implemented to improve compute times for the model. Once the model is confident in its position estimate, it can use fewer particles to speed compute time while still maintaining an accurate model. If uncertainty increases due to fewer measurements or drift, more particles are generated. Below is a graph of the number of particles generated during the full run of the filter. 
+
+<img src="{{ site.url }}{{ site.baseurl }}/assets/particle_filter_4.png"/>
+
+Next the new particles are generated. Rather than selecting particles from the belief state and copying them to the new belief state, this model selects a particle randomly with weighting from the calculated probabilities. It then generates a new particle near the selected particle and adds the newly generated particle to the new belief state. The new particles are generated using the equations below. 
+
+    x_new_particle = (rand(-1,1) * newSpread) + x_random_particle
+    y_new_particle = (rand(-1,1) * newSpread) + y_random_particle
+    theta_new_particle = (rand(-1,1) * newTurn) + theta_random_particle
+    newSpread = maxNewSpread * (1 - prob_random_particle)
+    newTurn = maxNewTurn * (1 - prob_random_particle)
+
+newSpread is the maximum x/y distance the new particle can be from the old particle. Likewise, newTurn is the maximum change in θ between the new particle and the old particle. The values of newParticleSpread and newParticleTurn are calculated based on the inverse of the probability of the random particle that the new particle is based on. This means that if a random particle with a high probability is selected, the generated random particle will be very close to the position of the random particle. If the random particle is low probability, the generated random particle is allowed be further away. This helps address th issue of particle deprivation. Because there are always new particles being generated, the particle set will never be taken over by one or two particle estimates, which is an issue when particles are simply duplicated. 
+
+From there, the belief state is updated with the new particles. Until a new measurement is registered, the model will move both the high probability average estimate point and every particle in the belief state according to the motion model and the odometry data. When there is a new measurement, the process will be repeated by calculating probabilities for the existing particles, selecting a new high probability average point, and generating another new particle set. 
 
 <p class="text-center">
 {% include elements/button.html link="https://github.com/scferro/me469_hw0" text="GitHub" %}
