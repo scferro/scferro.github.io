@@ -8,24 +8,29 @@ description: Simulated a planer multi-body dynamics of a jack in the box with ex
 # 2D Physics Engine From Scratch (Jack In the Box) 
 <br>
 
-### Brief overview
-<br>
-This project simulates a planer multi-body dynamics of a jack in the box. In the simulation, external forces are applied to the box. While the jack is falling freely, it will then experience some collisions with the box's walls.
+### Overview
+This project simulates planer multi-body impact dynamics of a jack bouncing around inside a box. In this simulation, external forces are applied to the box as input to the system. The primary forces applied are a sinusoidal rotational force that rotates the box back and forth and a vertical support force that stops the box from falling. The jack is in free-fall, and bounces off the walls of the box. 
+
 
 ### Video demo
-{% include elements/video.html id="pkTauVynRE8" %}
-<br>
-### System schematic
-<img src="{{ site.url }}{{ site.baseurl }}/assets/jack1.jpeg" style="height: 600px; width:600px;"/>
-<br>
-In the figure shown above, the system is a planar model, which means the two objects can only move in x and y directions. There are 9 frames in total:
-* **w**: the world frame (reference frame)
-* **b**: the box frame at the center of the box
-* **j**: the jack frame at the center of the box
-* **b1,b2**: the frames of the two corners of the box
-* **j1,j2,j3,j4**: the frames of the 4 masses of the jack
 
-### Parameter setups
+
+### System Diagram
+Below are diagrams showing the system used in this assignment. First, the frames used to simulate the box in this project are as follows:
+- **world_frame**
+- **g_w_box**: the center of the box relative to the world_frame
+- **g_box_wall_1, 2, 3, 4**: the walls of the box relative to the g_w_box frame
+
+<img src="{{ site.url }}{{ site.baseurl }}/assets/box_frames.jpeg"/>
+
+For simulating the jack, the following frames are used:
+- **g_w_jack**: the center of the jack relative to the world_frame
+- **g_jack_corner_1, 2, 3, 4**: the corners of the jack relative to the g_w_jack frame
+
+<img src="{{ site.url }}{{ site.baseurl }}/assets/jack_frames.jpeg"/>
+
+
+### Parameters
 <br>
 * **l_box(5)**: perpendicular distance from the center of the box to each wall
 * **m_box(150)**: mass of each wall
@@ -33,6 +38,7 @@ In the figure shown above, the system is a planar model, which means the two obj
 * **m_jack(5)**: point mass of each mass attached to the jack
 * **External force**: only a force in the positive y-direction is set to counter the gravitational force from the box
 * **Initial configuration**: A initial rotational speed of the box is set to be 1.5 rad/s so that the box keeps spinning counter-clockwise in the simulation
+
 
 ### Algorithm descriptions
 <br>

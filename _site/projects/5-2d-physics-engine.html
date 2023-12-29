@@ -23,7 +23,7 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="2D Physics Engine From Scratch">
   <meta property="og:description" content="Simulated a planer multi-body dynamics of a jack in the box with external forces and impacts.">
-  <meta property="og:image" content="https://jiasenzheng.github.io/assets/jack.gif">
+  <meta property="og:image" content="https://scferro.github.io/assets/jack_in_box.gif">
 
   <title>2D Physics Engine From Scratch</title>
   <meta name="description" content="Simulated a planer multi-body dynamics of a jack in the box with external forces and impacts.">
@@ -76,30 +76,33 @@
 
 </nav>
     <div class="col-lg-10 mx-auto mt-5 markdown-body">
-  <h1 id="2d-physics-engine-from-scratch-jack-in-the-box-">2D Physics Engine From Scratch (Jack In the Box) <br /><br /></h1>
+  <h1 id="2d-physics-engine-from-scratch-jack-in-the-box">2D Physics Engine From Scratch (Jack In the Box)</h1>
+<p><br /></p>
 
-<h3 id="brief-overview">Brief overview</h3>
-<p><br />
-This project simulates a planer multi-body dynamics of a jack in the box. In the simulation, external forces are applied to the box. While the jack is falling freely, it will then experience some collisions with the box’s walls.</p>
+<h3 id="overview">Overview</h3>
+<p>This project simulates planer multi-body impact dynamics of a jack bouncing around inside a box. In this simulation, external forces are applied to the box as input to the system. The primary forces applied are a sinusoidal rotational force that rotates the box back and forth and a vertical support force that stops the box from falling. The jack is in free-fall, and bounces off the walls of the box.</p>
 
 <h3 id="video-demo">Video demo</h3>
-<div class="video">
-  <iframe src="https://www.youtube.com/embed/pkTauVynRE8" frameborder="0" allowfullscreen=""></iframe>
-</div>
-<p><br /></p>
-<h3 id="system-schematic">System schematic</h3>
-<p><img src="http://localhost:4000/assets/jack1.jpeg" style="height: 600px; width:600px;" />
-<br />
-In the figure shown above, the system is a planar model, which means the two objects can only move in x and y directions. There are 9 frames in total:</p>
+
+<h3 id="system-diagram">System Diagram</h3>
+<p>Below are diagrams showing the system used in this assignment. First, the frames used to simulate the box in this project are as follows:</p>
 <ul>
-  <li><strong>w</strong>: the world frame (reference frame)</li>
-  <li><strong>b</strong>: the box frame at the center of the box</li>
-  <li><strong>j</strong>: the jack frame at the center of the box</li>
-  <li><strong>b1,b2</strong>: the frames of the two corners of the box</li>
-  <li><strong>j1,j2,j3,j4</strong>: the frames of the 4 masses of the jack</li>
+  <li><strong>world_frame</strong></li>
+  <li><strong>g_w_box</strong>: the center of the box relative to the world_frame</li>
+  <li><strong>g_box_wall_1, 2, 3, 4</strong>: the walls of the box relative to the g_w_box frame</li>
 </ul>
 
-<h3 id="parameter-setups">Parameter setups</h3>
+<p><img src="http://localhost:4000/assets/box_frames.jpeg" /></p>
+
+<p>For simulating the jack, the following frames are used:</p>
+<ul>
+  <li><strong>g_w_jack</strong>: the center of the jack relative to the world_frame</li>
+  <li><strong>g_jack_corner_1, 2, 3, 4</strong>: the corners of the jack relative to the g_w_jack frame</li>
+</ul>
+
+<p><img src="http://localhost:4000/assets/jack_frames.jpeg" /></p>
+
+<h3 id="parameters">Parameters</h3>
 <p><br /></p>
 <ul>
   <li><strong>l_box(5)</strong>: perpendicular distance from the center of the box to each wall</li>
