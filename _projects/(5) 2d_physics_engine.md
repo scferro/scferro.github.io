@@ -13,17 +13,22 @@ This project simulates planer multi-body impact dynamics of a jack bouncing arou
 
 
 ### Video demo
-
+<iframe width="560" height="560"
+src="https://www.youtube.com/embed/7h0ls1MOKCs"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+allowfullscreen></iframe>
 
 ### System Diagram
-Below are diagrams showing the system used in this assignment. First, the frames used to simulate the box in this project are as follows:
+Below are diagrams showing the system used in this assignment. First, the frames and transformations used to simulate the box in this project are as follows:
 - **world_frame**
 - **g_w_box**: the center of the box relative to the world_frame
 - **g_box_wall_1, 2, 3, 4**: the walls of the box relative to the g_w_box frame
 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/box_frames.jpeg"/>
 
-For simulating the jack, the following frames are used:
+For simulating the jack, the following are used:
 - **g_w_jack**: the center of the jack relative to the world_frame
 - **g_jack_corner_1, 2, 3, 4**: the corners of the jack relative to the g_w_jack frame
 
@@ -56,10 +61,10 @@ To solve for the dynamic motions of the system, we need to calculate the Euler L
     3. Calculate the kinetic and potential energies for both objects
     4. Compute the Lagrangian of the system (L = KE-V)
     5. Find the Euler Lagrangian equation based on Lagrangian (E_L = ddLdqdot - dLdq)
-<br><br>
+<br>
 * **External forces**<br><br>
 The only external force in this project is the force in the positive y-direction. The force is set to be the same as the gravitational force of the box. As a result, the system can be balanced and stay in the center in the simulation.
-<br><br>
+<br>
 * **Constraint equations**<br><br>
 The constraints are determined between each mass of the jack and each wall of the box. As a result, there are in total 16 constraints defined. The constrain variable phi is defined as the expression of the distance between the two impact object. For example, the phi value between mass 1 of the jack and the right wall of the box is the x value of g_b1j1 (g_b1j1[0,3]).
 <br><br>
