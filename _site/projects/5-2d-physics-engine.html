@@ -76,16 +76,18 @@
 
 </nav>
     <div class="col-lg-10 mx-auto mt-5 markdown-body">
-  <h1 id="2d-physics-engine-from-scratch-jack-in-the-box">2D Physics Engine From Scratch (Jack In the Box)</h1>
+  <h1 id="2d-physics-engine-from-scratch-jack-in-box">2D Physics Engine From Scratch (Jack in Box)</h1>
 <p><br /></p>
 
 <h3 id="overview">Overview</h3>
 <p>This project simulates planer multi-body impact dynamics of a jack bouncing around inside a box. In this simulation, external forces are applied to the box as input to the system. The primary forces applied are a sinusoidal rotational force that rotates the box back and forth and a vertical support force that stops the box from falling. The jack is in free-fall, and bounces off the walls of the box.</p>
 
 <h3 id="video-demo">Video demo</h3>
+<iframe width="560" height="560" src="https://www.youtube.com/embed/7h0ls1MOKCs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+<p><br /></p>
 
 <h3 id="system-diagram">System Diagram</h3>
-<p>Below are diagrams showing the system used in this assignment. First, the frames used to simulate the box in this project are as follows:</p>
+<p>Below are diagrams showing the system used in this assignment. First, the frames and transformations used to simulate the box in this project are as follows:</p>
 <ul>
   <li><strong>world_frame</strong></li>
   <li><strong>g_w_box</strong>: the center of the box relative to the world_frame</li>
@@ -94,69 +96,80 @@
 
 <p><img src="http://localhost:4000/assets/box_frames.jpeg" /></p>
 
-<p>For simulating the jack, the following frames are used:</p>
+<p>For simulating the jack, the following are used:</p>
 <ul>
   <li><strong>g_w_jack</strong>: the center of the jack relative to the world_frame</li>
   <li><strong>g_jack_corner_1, 2, 3, 4</strong>: the corners of the jack relative to the g_w_jack frame</li>
 </ul>
 
-<p><img src="http://localhost:4000/assets/jack_frames.jpeg" /></p>
+<p><img src="http://localhost:4000/assets/jack_frames.jpeg" />
+<br /></p>
 
 <h3 id="parameters">Parameters</h3>
-<p><br /></p>
 <ul>
-  <li><strong>l_box(5)</strong>: perpendicular distance from the center of the box to each wall</li>
-  <li><strong>m_box(150)</strong>: mass of each wall</li>
-  <li><strong>l_jack(1)</strong>: distance between the center of the jack to the mass attached to it</li>
-  <li><strong>m_jack(5)</strong>: point mass of each mass attached to the jack</li>
-  <li><strong>External force</strong>: only a force in the positive y-direction is set to counter the gravitational force from the box</li>
-  <li><strong>Initial configuration</strong>: A initial rotational speed of the box is set to be 1.5 rad/s so that the box keeps spinning counter-clockwise in the simulation</li>
-</ul>
-
-<h3 id="algorithm-descriptions">Algorithm descriptions</h3>
-<p><br /></p>
-<ul>
-  <li><strong>Rigid body transform</strong> <br /><br />
+  <li><strong>side_length_box</strong>: The length of each side of the box (default = 10)</li>
+  <li><strong>mass_box</strong>: The total mass of the box (default = 3)</li>
+  <li><strong>length_jack</strong>: The overall length of one of the jack massless rods (default = 1)</li>
+  <li><strong>mass_jack</strong>: The total mass of the jack (default = 1)</li>
+  <li><strong>External Forces</strong>: There are two external forces applied in this simulation:
     <ul>
-      <li><strong>g_wb &amp; g_wj</strong>: Transformations from the world frame to the box/ jack frame</li>
-      <li><strong>g_bb1 &amp; g_bb2</strong>: Transformations from the box frame to its two corners</li>
-      <li><strong>g_jj1 ~ g_jj4</strong>: Transformations from the jack frame to its for masses</li>
-      <li><strong>g_b1j1 ~ g_b1j4</strong>: Transformations from the top right corner to each mass of the jack</li>
-      <li><strong>g_b2j1 ~ g_b2j4</strong>: Transformations from the bottom left corner to each mass of the jack 
-<br /><br /></li>
+      <li>A force applied to the box in the positive y-direction to counter the force of gravity. It is equal to the weight of the box and jack combined.</li>
+      <li>A constant rotational torque applied to the box. The torque is given by the equation <strong>torque = a * mass_box * g</strong>, where a is a constant (default = 1).</li>
     </ul>
   </li>
-  <li><strong>Euler Lagrange</strong><br /><br />
-To solve for the dynamic motions of the system, we need to calculate the Euler Lagrange equations and the external force and then equate them. Since we are dealing with objects with rotational inertia, we need to calculate the rotational kinetic energy. The following steps are used to find Euler Lagrange equations:
-    <ol>
-      <li>Calculate body velocities of each object</li>
-      <li>Find the 6 by 6 mass inertias of both objects. Both the jack and the mass are simplified as a model with 4 point masses attached to them</li>
-      <li>Calculate the kinetic and potential energies for both objects</li>
-      <li>Compute the Lagrangian of the system (L = KE-V)</li>
-      <li>Find the Euler Lagrangian equation based on Lagrangian (E_L = ddLdqdot - dLdq)
-<br /><br /></li>
-    </ol>
+  <li><strong>Initial Configuration</strong>: In the initial configuration used, the box is centered at (0, 0) with a theta angle of 0. The jack starts at (3.5, 0) with an initial angle of pi/3 radians.</li>
+</ul>
+
+<h3 id="algorithm-description">Algorithm Description</h3>
+<p><strong>State Variable</strong>
+<br />
+The current state of the system is stored as a vector, <strong>q</strong>, which contains the following variables describing the position and orientation of the box and the jack relative to the world frame:</p>
+<ul>
+  <li>x_box: the x coordinate of the center of the box</li>
+  <li>y_box: the y coordinate of the center of the box</li>
+  <li>theta_box: the current angle of the box about the z axis</li>
+  <li>x_jack: the x coordinate of the center of the jack</li>
+  <li>y_jack: the y coordinate of the center of the jack</li>
+  <li>theta_jack: the current angle of the jack about the z axis</li>
+</ul>
+
+<p>Velocities and accelerations for the two objects are also found by taking the first and second time derivatives of q. Velocities are stored in the vector qdot and accelerations in the vector qddot.</p>
+
+<p><strong>Euler Lagrange</strong>
+<br />
+To solve for the dynamics of the objects in the system, first the Euler Lagrange equations and the external force were found. The following steps are used to find Euler Lagrange equations:</p>
+<ul>
+  <li>Calculate body velocities of each object. This is calculated using the frames at the centers of box and the jack.</li>
+  <li>Find the 6 by 6 mass inertias of both objects. Both the jack and the box are simplified as a model with 4 point masses attached to them</li>
+  <li>Calculate the total kinetic energy in the system (<strong>KE</strong>). Since these objects are translating as well as rotating, we need to calculate the both the linear and rotational kinetic energy for both objects, then sum them to find the total KE for the system.</li>
+  <li>Calculate total potential energy for the system (<strong>V</strong>). In this system, gravity is the only source of potential energy. Potential energy for both objects is calculated relative to the origin of the world frame, then summed to find the total.</li>
+  <li>Compute the Lagrangian of the system using the following equation: <strong>L = KE - V</strong></li>
+  <li>Compute the force matrix based on the forces applied to the system. The force matrix contains the external forces in the x and y directions and the torque about z applied to both the box and the jack.</li>
+  <li>Find the Euler Lagrangian equation based on Lagrangian and the force matrix, using the equation <strong>F = ddLdqdot - dLdq</strong>, where:
+    <ul>
+      <li>dLdq: the derivative of the Lagrangian with respect to q</li>
+      <li>ddLdqdot: the time derivative of the derivative of the Lagrangian with respect to qdot</li>
+    </ul>
   </li>
-  <li><strong>External forces</strong><br /><br />
-The only external force in this project is the force in the positive y-direction. The force is set to be the same as the gravitational force of the box. As a result, the system can be balanced and stay in the center in the simulation.
-<br /><br /></li>
-  <li><strong>Constraint equations</strong><br /><br />
-The constraints are determined between each mass of the jack and each wall of the box. As a result, there are in total 16 constraints defined. The constrain variable phi is defined as the expression of the distance between the two impact object. For example, the phi value between mass 1 of the jack and the right wall of the box is the x value of g_b1j1 (g_b1j1[0,3]).
-<br /><br /></li>
-  <li><strong>Impact updates</strong><br /><br />
-The following steps are used to solve for impact updates:
-    <ol>
-      <li>Create dummy variables for all the configurations variable for both before and after impact</li>
-      <li>Calculate Hamiltonian, dLdqdot, dphidq for the system</li>
-      <li>Substitute dummy variables to those equations for both before and after impact</li>
-      <li>Construct and solve for the equations based on the following formula:
-  <img src="http://localhost:4000/assets/jack2.png" alt="alt text" /> <br /><br /><br /></li>
-    </ol>
-  </li>
+</ul>
+
+<p><strong>Constraint Equations</strong>
+<br />
+The constraints are defined between each corner of the jack and each wall of the box; the corners of the jack cannot pass through the walls of the box. As a result, there are a total of 16 constraint equations defined. The constraint variable phi is defined as the expression of the distance between the two impacting objects. As a specified jack corner and wall of the box move closer together in the simulation, the phi value associated with that specific constraint equation approaches zero. When phi gets close enough to 0 (for this simulation, a threshold of 0.1 was used), the two objects are considered to have collided.</p>
+
+<p><strong>Impact Updates</strong>
+<br />
+After two objects collide, their states are updated to reflect the results of the impact. The following steps are used to solve for impact updates:</p>
+<ul>
+  <li>Create two sets of dummy variables for all the state variables. One set of dummy variables is for before impact and the other is for after impact.</li>
+  <li>Calculate Hamiltonian, dLdqdot, dphidq for the system</li>
+  <li>Substitute dummy variables to those equations for both before and after impact</li>
+  <li>Construct and solve for the equations based on the following formula:
+<img src="http://localhost:4000/assets/jack_eqn.png" alt="alt text" /></li>
 </ul>
 
 <p class="text-center">
-<a class="m-1 btn btn-outline-primary btn-2 " href="https://github.com/JiasenZheng/Physics_Engine_From_Scratch">
+<a class="m-1 btn btn-outline-primary btn-2 " href="https://github.com/scferro/2d_physics_sim">
   GitHub
 </a>
 </p>
