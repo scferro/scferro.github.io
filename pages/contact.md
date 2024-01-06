@@ -16,7 +16,7 @@ weight: 3
         <p>(847) 471-8561</p>
     </section><hr><br>
     <section>
-        <h3>Northwestern Email</h3>
+        <h3>School Email</h3>
         <a class="dy ke" href="mailto:stephenferro2024@u.northwestern.edu" rel="noopener ugc nofollow" target="_blank">stephenferro2024@u.northwestern.edu</a>
     </section><hr><br>
     <section>

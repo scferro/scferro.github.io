@@ -60,5 +60,5 @@ Two different controllers were simulated were considered as results.
 
 
 <p class="text-center">
-{% include elements/button.html link="https://github.com/JiasenZheng/Youbot_Mobile_Manipulation" text="GitHub" %}
+{% include elements/button.html link="https://github.com/scferro/me449_capstone" text="GitHub" %}
 </p>
