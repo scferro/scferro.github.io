@@ -13,8 +13,8 @@ This project aims to control a Youbot to pick and place a block with user-specif
 
 
 ### Video demo
-<iframe width="560" height="315" src="https://www.youtube.com/embed/c2avjINonNs?si=JuqYFyma96Dk1KJY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
+<iframe width="640" height="480" src="https://www.youtube.com/embed/c2avjINonNs?si=JuqYFyma96Dk1KJY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<br>
 
 ### Algorithm description
 The **NextState** function calculates the robot's configuration at the next time step using the first-order Euler method.

@@ -21,12 +21,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Youbot Mobile Manipulation">
-  <meta property="og:description" content="Controlled a Youbot to pick and place a block with user-specified positions and then simulated it in Coppeliasim.">
-  <meta property="og:image" content="https://jiasenzheng.github.io/assets/best.gif">
+  <meta property="og:title" content="YouBot Mobile Manipulation">
+  <meta property="og:description" content="Simulated a KUKA YouBot picking up and placing a block at user-specified positions.">
+  <meta property="og:image" content="https://scferro.github.io/assets/youbot.gif">
 
-  <title>Youbot Mobile Manipulation</title>
-  <meta name="description" content="Controlled a Youbot to pick and place a block with user-specified positions and then simulated it in Coppeliasim.">
+  <title>YouBot Mobile Manipulation</title>
+  <meta name="description" content="Simulated a KUKA YouBot picking up and placing a block at user-specified positions.">
 
   <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
 
@@ -76,20 +76,18 @@
 
 </nav>
     <div class="col-lg-10 mx-auto mt-5 markdown-body">
-  <h1 id="youbot-mobile-manipulation-">Youbot Mobile Manipulation <br /><br /></h1>
+  <h1 id="youbot-mobile-manipulation">Youbot Mobile Manipulation</h1>
+<p><br /></p>
 
 <h3 id="brief-overview">Brief Overview</h3>
-<p><br />
-This project aims to control a Youbot to pick and place a block with user-specific positions and then simulate it in Coppeliasim. The algorithm first generates a reference traject of the end-effector and then applies feedback control to manipulate the Youbot.
-<br /><br /></p>
+<p>This project aims to control a Youbot to pick and place a block with user-specific positions and then simulate it in Coppeliasim. The algorithm first generates a reference traject of the end-effector and then applies feedback control to manipulate the Youbot.</p>
+
 <h3 id="video-demo">Video demo</h3>
-<div class="video">
-  <iframe src="https://www.youtube.com/embed/tw601obYkuU" frameborder="0" allowfullscreen=""></iframe>
-</div>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/c2avjINonNs?si=JuqYFyma96Dk1KJY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
 <p><br /></p>
+
 <h3 id="algorithm-description">Algorithm description</h3>
-<p><br />
-The <strong>NextState</strong> function calculates the robot’s configuration at the next time step using the first-order Euler method.</p>
+<p>The <strong>NextState</strong> function calculates the robot’s configuration at the next time step using the first-order Euler method.</p>
 
 <p>The <strong>TrajectoryGenerator</strong> function takes in the transformation matrix of some required waypoints and outputs a list of transformation matrices of end-effector with respect to the space frame.</p>
 
@@ -110,7 +108,7 @@ The <strong>NextState</strong> function calculates the robot’s configuration a
 <p>The <strong>FeedbackControl</strong> function is used to calculate the kinematic task-space feedforward plus feedback control law, shown below.<br />
 <img src="http://localhost:4000/assets/youbot1.png" alt="alt text" /></p>
 
-<h3 id="initial-setups">Initial setups</h3>
+<h3 id="initial-configuration">Initial Configuration</h3>
 <p><br /></p>
 <ol>
   <li>The default initial cube postion in world frame is:<br />
@@ -125,7 +123,7 @@ The <strong>NextState</strong> function calculates the robot’s configuration a
 
 <h3 id="results">Results</h3>
 <p><br />
-Three situations were considered as results.</p>
+Two different controllers were simulated were considered as results.</p>
 <ol>
   <li>Best: a result with a well-tuned controller with the default cube positon
     <ul>
@@ -137,15 +135,6 @@ Three situations were considered as results.</p>
     <ul>
       <li>After tunning, a feedforward-plus-PI control with a Kp of 2 and a Ki of 5 is used. The Xerror plot is shown below: <br />
  <img src="http://localhost:4000/assets/Kp=2&amp;Ki=5.png" alt="alt text" /></li>
-    </ul>
-  </li>
-  <li>newTask: a result with another specified initial and final cube position
-    <ul>
-      <li>The new initial cube position is (0.5 m, 0.5 m, 0 rad) in the world frame</li>
-      <li>The new final cube position is (0 m, -0.8 m, -pi/2 rad) in the world frame</li>
-      <li>After tunning, a feedforward-plus-PI control with a Kp of 15 and a Ki of 3 is used. The Xerror plot is shown below: <br />
- <img src="http://localhost:4000/assets/Kp=15&amp;Ki=3_2.png" alt="alt text" />
-<br /><br /></li>
     </ul>
   </li>
 </ol>
