@@ -1,6 +1,6 @@
 ---
 name: Implementation and Assessment of a Particle Filter 
-tools: [Particle Filter, Python]
+tools: [Particle Filter, Python, Localization]
 image: https://scferro.github.io/assets/particle_filter_2.png
 description: Applied a particle filter to a robot dataset to improve the position estimate of the robot. 
 ---
