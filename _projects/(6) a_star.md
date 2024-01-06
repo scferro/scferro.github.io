@@ -1,11 +1,11 @@
 ---
-name: Implementation and Assessment of a Particle Filter 
-tools: [OpenCV, Python, SIFT, Motion Estimation]
+name: Using A* to Navigate
+tools: [AI, Python, Autonomous Navigation, A*, Path Planning]
 image: https://jiasenzheng.github.io/assets/vo.gif
-description: Applied a particle filter to a robot dataset to improve the position estimate of the robot. 
+description: Used the A* algorithm to plan paths for a simulated robot.
 ---
 
-# Implementation and Assessment of a Particle Filter 
+# Using the A* Algorithm to Plan Paths and Avoid Obstacles
 <br>
 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/particle_filter_5.png"/>
