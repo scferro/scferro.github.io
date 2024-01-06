@@ -1,15 +1,15 @@
 ---
-name: Implementation and Assessment of a Particle Filter 
+name: Implementation of a Particle Filter for Robot Localization
 tools: [Particle Filter, Python, Localization]
 image: https://scferro.github.io/assets/particle_filter_2.png
 description: Applied a particle filter to a robot dataset to improve the position estimate of the robot. 
 ---
 
-# Implementation and Assessment of a Particle Filter 
+# Implementation and Assessment of a Particle Filter for Robot Localization
 <br>
 
 ### Overview
-The goal of this project was to use a particle filter to improve the position and heading estimate for a robot in a test environment. Odometry data containing the commanded linear and angular velocities, distance and heading measurements relative to known landmarks, and ground truth position data for the robot were all provided as part of the data set. The data was collected from robots at the Autonomous Space Robotics Lab at the University of Toronto. Thorough documentation of the robot platform, task and file formats, as well as video, are provided here: http://asrl.utias.utoronto.ca/datasets/mrclam/index.html.
+The goal of this project was to use a particle filter to improve localization accuracy for a robot in a test environment. Odometry data containing the commanded linear and angular velocities, distance and heading measurements relative to known landmarks, and ground truth position data for the robot were all provided as part of the data set. The data was collected from robots at the Autonomous Space Robotics Lab at the University of Toronto. Thorough documentation of the robot platform, task and file formats, as well as video, are provided here: http://asrl.utias.utoronto.ca/datasets/mrclam/index.html.
 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/particle_filter_5.png"/>
 
