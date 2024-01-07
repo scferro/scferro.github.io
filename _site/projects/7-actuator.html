@@ -21,12 +21,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="A* Algorithm to Navigate From Scratch">
-  <meta property="og:description" content="Used the A* algorithm to plan paths for a simulated robot.">
-  <meta property="og:image" content="https://scferro.github.io/assets/astar_stack.png">
+  <meta property="og:title" content="Design and Testing a 3D Printed Cycloidal Robot Actuator">
+  <meta property="og:description" content="Designed and tested a 3D printed cycloidal actuator for use in walking robots.">
+  <meta property="og:image" content="https://scferro.github.io/assets/actuator_main.png">
 
-  <title>A* Algorithm to Navigate From Scratch</title>
-  <meta name="description" content="Used the A* algorithm to plan paths for a simulated robot.">
+  <title>Design and Testing a 3D Printed Cycloidal Robot Actuator</title>
+  <meta name="description" content="Designed and tested a 3D printed cycloidal actuator for use in walking robots.">
 
   <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
 
@@ -76,30 +76,15 @@
 
 </nav>
     <div class="col-lg-10 mx-auto mt-5 markdown-body">
-  <h1 id="using-the-a-algorithm-to-plan-paths-and-avoid-obstacles">Using the A* Algorithm to Plan Paths and Avoid Obstacles</h1>
+  <h1 id="design-of-a-3d-printed-cycloidal-robot-actuator-for-a-quadruped-robot">Design of a 3D Printed Cycloidal Robot Actuator for a Quadruped Robot</h1>
 <p><br /></p>
 
-<p><img src="http://localhost:4000/assets/astar_stack.png" /></p>
+<p><img src="http://localhost:4000/assets/actuator1.png" /></p>
 
 <h3 id="overview">Overview</h3>
-<p>The goal of this project was to use a particle filter to improve the position and heading estimate for a robot in a test environment. Odometry data containing the commanded linear and angular velocities, distance and heading measurements relative to known landmarks, and ground truth position data for the robot were all provided as part of the data set. The data was collected from robots at the Autonomous Space Robotics Lab at the University of Toronto. Thorough documentation of the robot platform, task and file formats, as well as video, are provided here: http://asrl.utias.utoronto.ca/datasets/mrclam/index.html.</p>
-
-<p>Overall, the particle filter was successfully able to combine the odometry data and the measured position data to dramatically improve the position estimate relative to the pure dead reckoning estimate. As expected, the filtering algorithm still struggled in situations where no measurements were taken. However as long as measurements were taken regularly, the filter was able to keep the position estimate within ~0.25m of the ground truth position.</p>
-
-<h3 id="basic-a-planning">Basic A* Planning</h3>
-<p><img src="http://localhost:4000/assets/astar1.png" /></p>
-
-<h3 id="online-a-planning">Online A* Planning</h3>
-<p><img src="http://localhost:4000/assets/astar2.png" /></p>
-
-<h3 id="reducing-the-grid-size">Reducing the Grid Size</h3>
-
-<h3 id="adding-robot-motion">Adding Robot Motion</h3>
-
-<h3 id="robot-movement-while-planning">Robot Movement While Planning</h3>
 
 <p class="text-center">
-<a class="m-1 btn btn-outline-primary btn-2 " href="https://github.com/scferro/me469_hw1">
+<a class="m-1 btn btn-outline-primary btn-2 " href="https://github.com/scferro/me469_hw0">
   GitHub
 </a>
 </p>
