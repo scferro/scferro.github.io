@@ -27,13 +27,13 @@ Below are diagrams showing the system used in this assignment. First, the frames
 - **g_w_box**: the center of the box relative to the world_frame
 - **g_box_wall_1, 2, 3, 4**: the walls of the box relative to the g_w_box frame
 
-<img src="{{ site.url }}{{ site.baseurl }}/assets/box_frames.jpeg"/>
+<img src="{{ site.url }}{{ site.baseurl }}/assets/box_frames.jpeg" width="600"/>
 
 For simulating the jack, the following are used:
 - **g_w_jack**: the center of the jack relative to the world_frame
 - **g_jack_corner_1, 2, 3, 4**: the corners of the jack relative to the g_w_jack frame
 
-<img src="{{ site.url }}{{ site.baseurl }}/assets/jack_frames.jpeg"/>
+<img src="{{ site.url }}{{ site.baseurl }}/assets/jack_frames.jpeg" width="600"/>
 <br>
 
 ### Parameters
