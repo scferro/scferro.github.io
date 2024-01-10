@@ -76,15 +76,34 @@
 
 </nav>
     <div class="col-lg-10 mx-auto mt-5 markdown-body">
-  <h1 id="me495-final-project---group-1---botrista">ME495 Final Project - Group 1 - Botrista</h1>
+  <h1 id="making-pour-over-coffee-with-a-7dof-robot-arm---botrista">Making Pour Over Coffee with a 7DOF Robot Arm - Botrista</h1>
+<p><br /></p>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/INRJ8Y_SD4U?si=X1NxuWG7hQWI9v2w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+<h3 id="overview">Overview</h3>
+<p>The goal of this project was to control a robot arm to brew a cup of pour over coffee. An Intel RealSense camera and OpenCV were used to detect the target coffee cup and the various objects the robot needed to brew the coffee. The robot could then pick up each object in order and perform an action with it. The steps to make the coffee were as follows:</p>
 
-<h2 id="authors">Authors:</h2>
-<p>Stephen Ferro, Anuj Natraj, Carter DiOrio, Kyle Wang, and Jihai Zhao</p>
+<ol>
+  <li>Wait for a coffee cup to be placed in the cup holder.</li>
+  <li>Place the filter in the coffee pot.</li>
+  <li>Pick up the coffee grounds and dump them in the filter.</li>
+  <li>Pick up the kettle of hot water and pour water into the coffee pot.</li>
+  <li>After coffee finishes dripping, remove the filter.</li>
+  <li>Pour the coffee into the detected cup.</li>
+</ol>
 
-<h2 id="description">Description:</h2>
-<p>A collection of ROS2 packages to drive the Emika Franka robot arm to brew a cup of pour over coffee.</p>
+<p>ROS 2 and MoveIt 2 were used to interface with the Franka and control it’s movements. A custom wrapper package for MoveIt was written to simplify usage. This package contained services and actions that could be used for a variety of robot motions, such as moving smoothly between two points.</p>
+
+<h3 id="video-demo">Video Demo</h3>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/INRJ8Y_SD4U?si=X1NxuWG7hQWI9v2w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+
+<h3 id="project-team">Project Team</h3>
+<ul>
+  <li>Stephen Ferro</li>
+  <li>Anuj Natraj</li>
+  <li>Carter DiOrio</li>
+  <li>Kyle Wang</li>
+  <li>Jihai Zhao</li>
+</ul>
 
 <h2 id="quickstart-instructions">Quickstart Instructions:</h2>
 <ol>
@@ -120,24 +139,6 @@
   <li>open_franka.launch.xml: Launches moveit and RViz for the Franka arm.</li>
   <li>realsense.launch.py: Launches both the d435i and the d405, the april tag node, and the camera_localizer node.</li>
 </ul>
-
-<h2 id="make_coffee-routine-high-level-overview">‘make_coffee’ Routine High Level Overview:</h2>
-<p>This system is essentially a series of service and action calls which cause the robot to brew coffee when called in order.</p>
-<ol>
-  <li>The cup_detection node wait until it detects an empty cup placed in the detection area, then publishes a message on the ‘coffee_start’ topic, which cuases the run_botrista node to start the routine</li>
-  <li>Picks up the Filter from filter stand using the pick_filter action</li>
-  <li>Places the Filter on the Pot using the place_filter_in_pot action</li>
-  <li>Pick up a full scoop of coffee gournds and dump them in filter. This is all handled by the scoop action</li>
-  <li>Pick up Kettle with the pick_kettle action</li>
-  <li>Pour water from kettle using the pour_action action</li>
-  <li>Place Kettle back on kettle stand w ith the place_kettle action</li>
-  <li>Wait for coffee grounds to soak using the delay service</li>
-  <li>Pick up Filter from the Pot using the pick_filter_in_pot action</li>
-  <li>Place Filter on filter stand (place_filter action)</li>
-  <li>Pick up Pot from pot stand (pick_pot action)</li>
-  <li>Pour Coffee (pour_pot action)</li>
-  <li>Put the Pot back on pot stand (place_pot action)</li>
-</ol>
 
 <h2 id="lessons-learned-and-future-work">Lessons Learned and Future Work:</h2>
 <ul>
