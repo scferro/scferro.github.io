@@ -8,7 +8,7 @@ description: Used the A* algorithm to plan paths for a simulated robot.
 # Using the A* Algorithm to Plan Paths and Avoid Obstacles
 <br>
 
-<img src="{{ site.url }}{{ site.baseurl }}/assets/astar_stack.png" />
+<img src="{{ site.url }}{{ site.baseurl }}/assets/astar_stack.png" width="600"/>
 
 
 ### Overview
