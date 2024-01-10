@@ -8,6 +8,10 @@ description: Programmed a Franka Emika 7DOF robot arm to brew a cup of pour over
 # Making Pour Over Coffee with a 7DOF Robot Arm - Botrista
 <br>
 
+
+<img src="{{ site.url }}{{ site.baseurl }}/assets/coffee3.JPEG" width="800"/>
+<br>
+
 ### Overview 
 The goal of this project was to control a robot arm to brew a cup of pour over coffee. An Intel RealSense camera and OpenCV were used to detect the target coffee cup and the various objects the robot needed to brew the coffee. The robot could then pick up each object in order and perform an action with it. The steps to make the coffee were as follows:
 
@@ -53,9 +57,15 @@ Once the robot knows the rough position of each object using the April tags, it 
 
 Once the robot detects the handle vector, it moves into position at a fixed offset from the detected handle. It orients itself so the handle vector is 90 degrees to the gripper. It performs two refinement movements to be certain that the handle is fully visible by the camera and that the system has identified the correct handle position. Once the refinement was complete, the robot would move it and grasp the object. Below are two screenshots from the d405 camera during the handle detection process. The first is for the kettle and the second is the coffee scoop. 
 
+<img src="{{ site.url }}{{ site.baseurl }}/assets/coffee_d405.png"/>
+<br>
+
 
 ### Grasping
 In order to securely grasp these objects, especially the relatively heavy ones like the kettle, we designed a custom gripper for the Franka as well as custom handles for the various objects being picked up. Rather than a flat grasping surface, our gripper had large diamond-shaped notches cut into it. The custom handle we made for each object also had the same diamond shape, which allowed the robot to very securely grasp each object. The gripper also incorporated a flat section, so it could still be used to pinch objects to pick them up too. This was used for picking up the coffee scoop, which was too small for a custom handle. Below are photos of the gripper being used on different handles. 
+
+<img src="{{ site.url }}{{ site.baseurl }}/assets/coffee_gripper.png"/>
+<br>
 
 
 ### Lessons Learned and Future Work

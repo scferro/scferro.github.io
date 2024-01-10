@@ -79,6 +79,9 @@
   <h1 id="making-pour-over-coffee-with-a-7dof-robot-arm---botrista">Making Pour Over Coffee with a 7DOF Robot Arm - Botrista</h1>
 <p><br /></p>
 
+<p><img src="http://localhost:4000/assets/coffee3.JPEG" width="800" />
+<br /></p>
+
 <h3 id="overview">Overview</h3>
 <p>The goal of this project was to control a robot arm to brew a cup of pour over coffee. An Intel RealSense camera and OpenCV were used to detect the target coffee cup and the various objects the robot needed to brew the coffee. The robot could then pick up each object in order and perform an action with it. The steps to make the coffee were as follows:</p>
 
@@ -120,8 +123,14 @@
 
 <p>Once the robot detects the handle vector, it moves into position at a fixed offset from the detected handle. It orients itself so the handle vector is 90 degrees to the gripper. It performs two refinement movements to be certain that the handle is fully visible by the camera and that the system has identified the correct handle position. Once the refinement was complete, the robot would move it and grasp the object. Below are two screenshots from the d405 camera during the handle detection process. The first is for the kettle and the second is the coffee scoop.</p>
 
+<p><img src="http://localhost:4000/assets/coffee_d405.png" />
+<br /></p>
+
 <h3 id="grasping">Grasping</h3>
 <p>In order to securely grasp these objects, especially the relatively heavy ones like the kettle, we designed a custom gripper for the Franka as well as custom handles for the various objects being picked up. Rather than a flat grasping surface, our gripper had large diamond-shaped notches cut into it. The custom handle we made for each object also had the same diamond shape, which allowed the robot to very securely grasp each object. The gripper also incorporated a flat section, so it could still be used to pinch objects to pick them up too. This was used for picking up the coffee scoop, which was too small for a custom handle. Below are photos of the gripper being used on different handles.</p>
+
+<p><img src="http://localhost:4000/assets/coffee_gripper.png" />
+<br /></p>
 
 <h3 id="lessons-learned-and-future-work">Lessons Learned and Future Work</h3>
 <p>The biggest issues we encountered with this project was MoveIt getting the robot into configurations that it could not get itself out of. This happened most frequently with motions that had a lot of path or goal constraints, such as moving the scoop to the pot or pouring the pot into the cup. We were able to work around these issues largely by tuning the constraints used and by inserting more known intermediate positions for the robot to go to before reaching the goal pose. One idea to further improve this issue would be to have MoveIt find multiple paths to the goal, then choose the best option, rather than just picking the first solution it finds with RRT. Perhaps it would also be possible to write code allow MoveIt to take into account future commands as well as the current command. This could allow it to plan a path from which it does not get stuck.</p>
