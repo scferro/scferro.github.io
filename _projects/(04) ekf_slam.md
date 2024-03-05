@@ -17,5 +17,5 @@ In this project, I implemented a SLAM algorithm using an extended Kalman filter 
 
 
 <p class="text-center">
-{% include elements/button.html link="https://github.com/scferro/rrt_project" text="GitHub" %}
+{% include elements/button.html link="https://github.com/ME495-Navigation/slam-project-scferro" text="GitHub" %}
 </p>
