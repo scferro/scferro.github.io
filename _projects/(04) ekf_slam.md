@@ -1,6 +1,6 @@
 ---
 name: EKF SLAM Algorithm from Scratch
-tools: [C++, ROS 2, Simultaneous Localization and Mapping, Navigation]
+tools: [C++, ROS 2, SLAM]
 image: https://scferro.github.io/assets/ekf_slam_sim.png
 description: Created a collection of ROS 2 packages for a turtlebot to create a map, detect obstacles, and localize itself. 
 ---
