@@ -121,7 +121,7 @@ First, a URDF description file for the robot was created. The URDF includes link
 
 Next, environment in IsaacSim was created and the URDF was imported. Joint limits, stiffnesses, and damping were defined, along with other physics properties such as the tire dynamics. Additionally, simulated sensors were created to replicate the real sensors discussed in the odometry section. Isaac Sim has an easy to use <a href="https://docs.omniverse.nvidia.com/isaacsim/latest/features/external_communication/ext_omni_isaac_ros_bridge.html" target="_blank"><u>ROS 2 Bridge</u></a> which made integrating with my packages relatively straightforward. Below you can see the robot driving in the simulation with tele-op control. 
 
-<img src="{{ site.url }}{{ site.baseurl }}/assets/car_sim.gif" width="200%" height="200%/>
+<img src="{{ site.url }}{{ site.baseurl }}/assets/car_sim.gif"/>
 
 
 ### Drag Racing
@@ -156,13 +156,13 @@ Finally, a point-to-point driving mode was implemented for driving a "race track
 
 Once an accurate map is generated, it can be saved using the start but"ton on the controller. The next step in this process is planning the actual race path. This again involves slowly driving the car along the path you want it to follow. Once you reach the end, the desired path can be saved as a CSV file containing all the poses of the robot in the path. Now the robot is ready to drive the path. 
 
-<img src="{{ site.url }}{{ site.baseurl }}/assets/car_path.gif" width="200%" height="200%/>
+<img src="{{ site.url }}{{ site.baseurl }}/assets/car_path.gif"/>
 
 When the path racing launch file is run and the race is started, the robot first checks it's current position in the map based on the estimate from Slam toolbox. It determines which pose in the planned path it is currently closest to based on the Euclidean distance. Then, it takes the pose two poses ahead in the path and sets that as the target pose. It determines the difference between the robot's current orientation and the upcoming target orientation, then uses a PID control loop to generate an angular velocity command based on that difference. This is then sent to the velocity control node, and the process repeats.
 
 Throttle control works in a very similar way. The robot first looks at a pose 6 poses ahead of it's current closest pose in the path. It calculates the difference in heading, then use a Proportional controller to set the throttle signal. The goal is to slow the robot down well before it reaches a corner to avoid loosing control. When going straight, it slowly ramps the throttle speed, limiting wheel spin and ensuring the robot makes it to the end of the path.  This is a fairly simply method of path following that may not work well with a more complex path. However, it works well enough for navigating hallway environments with simple 90 degree corners. See the example below.  
 
-<img src="{{ site.url }}{{ site.baseurl }}/assets/car_auto_drive.gif" width="200%" height="200%/>
+<img src="{{ site.url }}{{ site.baseurl }}/assets/car_auto_drive.gif"/>
 
 This navigation was also tested on the real robot, and the results can be seen in the video demo. Both slam and path planning are much noisier outside the sim and will require additional tuning to optimize performance. 
 
