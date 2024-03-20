@@ -1,7 +1,7 @@
 ---
 name: A* Algorithm to Navigate From Scratch
 tools: [AI, Python, Autonomous Navigation, A*, Path Planning]
-image: https://scferro.github.io/assets/astar_stack.png
+image: https://scferro.github.io/assets/astar_main.png
 description: Used the A* algorithm to plan paths for a simulated robot.
 ---
 

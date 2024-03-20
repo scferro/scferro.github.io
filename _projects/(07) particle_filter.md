@@ -1,7 +1,7 @@
 ---
 name: Implementation of a Particle Filter for Robot Localization
 tools: [Particle Filter, Python, Localization]
-image: https://scferro.github.io/assets/particle_filter_2.png
+image: https://scferro.github.io/assets/particle_filter_main.png
 description: Applied a particle filter to a robot dataset to improve the position estimate of the robot. 
 ---
 

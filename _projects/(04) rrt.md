@@ -1,7 +1,7 @@
 ---
 name: Rapidly-Exploring Random Tree
 tools: [Python, Path Planning]
-image: https://scferro.github.io/assets/rrt_4.png
+image: https://scferro.github.io/assets/rrt_main.png
 description: Created a program to find a path between two points points while avoiding obstacles using an RRT. 
 ---
 
