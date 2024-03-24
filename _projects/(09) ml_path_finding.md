@@ -1,11 +1,11 @@
 ---
 name: Obstacle Detection from RGB Video Using a Neural Network
-tools: [Deep Learning, PyTorch, Neural Networks, Path Planning]
+tools: [Deep Learning, PyTorch, Neural Networks, Path Planning, Image Segmentation]
 image: https://scferro.github.io/assets/dl_out_sample6.png
 description: Created a neural network for detecting obstacles using RGB cameras mounted on a mobile robot.
 ---
 
-# Obstacle Detection from RGB Video Using a Neural Network
+# Image Segmentation and Obstacle Detection from RGB Video Using a Neural Network
 <br>
 
 ### Overview
@@ -13,7 +13,7 @@ In this project, I worked with two other MSR students to build an neural network
 
 
 ### Video Demo
-Below is sample video captured while testing the network on the autonomous car robot. We can see that the robot is easily able to distinguish between walls and open floors. It also seems to be able to detect some obstacles, like shoes of someone walking in front of it, but it struggles with other obstacles that were not in the training dataset. This will likely be improved with a more robust and diverse training dataset. More training time could improve these issues as well.
+Below is sample video captured while testing the network on the autonomous car robot. In this video, "safe" areas are marked in black, obstacles and unsafe areas are marked in white. In this video, it is clear that the robot is able to distinguish between walls and floors. It also seems to be able to detect some obstacles, like shoes of someone walking in front of it, but it struggles with other obstacles that were not in the training dataset. This will likely be improved with a more robust and diverse training dataset. More training time could improve these issues as well.
 
 <iframe width="800" height="450"
 src="https://www.youtube.com/embed/lt4EdjW5U3k?si=-NDz__lFQDcUUGZ5"
@@ -139,7 +139,7 @@ In the image below, the robot is easily able to detect the wall in front of it, 
 
 
 
-## THIS PROJECT IS STILL IN PROGRESS. CHECK BACK SOON FOR MORE!
+## This porject is still in porgress, check back soon for more!
 
 <p class="text-center">
 {% include elements/button.html link="https://github.com/scferro/deep_learning_hallway_detection" text="GitHub" %}
