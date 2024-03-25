@@ -2,7 +2,7 @@
 name: EKF SLAM Algorithm from Scratch
 tools: [C++, ROS 2, SLAM, Extended Kalman Filter]
 image: https://scferro.github.io/assets/ekf_slam_main.gif
-description: Created a collection of ROS 2 packages for a turtlebot to create a map, detect and associate obstacles, and localize itself. 
+description: Created a collection of ROS 2 packages for a turtlebot to create a map, detect and associate obstacles, and localize itself using wheel odometry and lidar scans.
 ---
 
 # EKF SLAM Algorithm from Scratch
