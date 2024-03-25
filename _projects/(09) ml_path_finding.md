@@ -9,7 +9,7 @@ description: Created a neural network for detecting obstacles using an RGB camer
 <br>
 
 ### Overview
-In this project, I worked with two other MSR students to build an neural network using Pytorch to detect obstacles in the path of a mobile robot. I then deployed the trained network on the <a href="https://www.reddit.com/r/EngineeringNS/comments/zvellk/tarmo5/" target="_blank"><u>Autonomous RC Car</u></a> I built to test it. Currently, I am working on using the trained network to further improve the lane centering abilities of the autonomous car while navigating through hallways, classrooms, and labs. 
+In this project, I worked with two other MSR students to build an neural network using Pytorch to detect obstacles in the path of a mobile robot. I then deployed the trained network on the <a href="https://scferro.github.io/projects/00-autonomous-rc-car" target="_blank"><u>Autonomous RC Car</u></a> I built to test it. Currently, I am working on using the trained network to further improve the lane centering abilities of the autonomous car while navigating through hallways, classrooms, and labs. 
 
 
 ### Video Demo
@@ -25,7 +25,7 @@ allowfullscreen></iframe>
 
 
 ### Neural Network Architecture
-The architecture of this neural network is based on the deep convolutional neural network <a href="https://www.reddit.com/r/EngineeringNS/comments/zvellk/tarmo5/" target="_blank"><u>SegNet, proposed by Vijay Badrinarayanan, Alex Kendall, Roberto Cipolla</u></a> with some changes to better suit this application. This network is designed to map RGB images to segmented masks.
+The architecture of this neural network is based on the deep convolutional neural network <a href="https://arxiv.org/abs/1511.00561v3" target="_blank"><u>SegNet, proposed by Vijay Badrinarayanan, Alex Kendall, Roberto Cipolla</u></a> with some changes to better suit this application. This network is designed to map RGB images to segmented masks.
 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/cnn_paper.png" width="400"/>
 
@@ -106,7 +106,7 @@ Below is the full model architecture, as output by the torchsummary Python libra
 ### Dataset Creation
 To create the dataset, we drove the robot through hallways and labs using tele-op control while collecting and saving images from the camera. We then used the labeling tool <a href="https://https://labelstud.io/" target="_blank"><u>LabelStudio</u></a> to mark the "safe" regions for the robot to travel to in a selection of images. 
 
-<img src="{{ site.url }}{{ site.baseurl }}/assets/deep_learning_dataset.png"/>
+<img src="{{ site.url }}{{ site.baseurl }}/assets/deep_learning_dataset.png" width="400"/>
 
 Once the initial dataset was created, we also augmented the dataset by duplicating and modifying the original images. For each original image, we did the following:
 
