@@ -174,7 +174,7 @@ Overall, this project was very successful. I built the robot from scratch and wa
 - Significant tuning and development of the path following algorithm 
 - Use reinforcement learning to further optimize car behavior at high speeds
 
-I have also been working on a visual odometry solution for this robot use a neural network. This would allow the robot to detect walls and other obstacles using the RealSense camera, then navigate away from them. This could be used for to improve the lane centering while drag racing, or improve odometry when navigating. Stay tuned for more!
+I have also been working on a visual odometry solution for this robot use a neural network. This allows the robot to detect walls and other obstacles using the RealSense camera, then navigate away from them. Read more about this project <a href="https://scferro.github.io/projects/09-ml-path-finding" target="_blank"><u>here</u></a>.
 
 
 <p class="text-center">

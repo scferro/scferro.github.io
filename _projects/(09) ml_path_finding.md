@@ -2,7 +2,7 @@
 name: Obstacle Detection from RGB Video Using a Neural Network
 tools: [Deep Learning, PyTorch, Neural Networks, Path Planning, Image Segmentation]
 image: https://scferro.github.io/assets/dl_out_sample6.png
-description: Created a neural network for detecting obstacles using RGB cameras mounted on a mobile robot.
+description: Created a neural network for detecting obstacles using an RGB camera mounted on a mobile robot.
 ---
 
 # Image Segmentation and Obstacle Detection from RGB Video Using a Neural Network
@@ -139,7 +139,7 @@ In the image below, the robot is easily able to detect the wall in front of it, 
 
 
 
-## This porject is still in porgress, check back soon for more!
+## This project is still in progress, check back soon for more!
 
 <p class="text-center">
 {% include elements/button.html link="https://github.com/scferro/deep_learning_hallway_detection" text="GitHub" %}
