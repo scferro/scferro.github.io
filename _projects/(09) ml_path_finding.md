@@ -106,7 +106,7 @@ Below is the full model architecture, as output by the torchsummary Python libra
 ### Dataset Creation
 To create the dataset, we drove the robot through hallways and labs using tele-op control while collecting and saving images from the camera. We then used the labeling tool <a href="https://labelstud.io/" target="_blank"><u>LabelStudio</u></a> to mark the "safe" regions for the robot to travel to in a selection of images. 
 
-<img src="{{ site.url }}{{ site.baseurl }}/assets/deep_learning_dataset.png" width="400"/>
+<img src="{{ site.url }}{{ site.baseurl }}/assets/deep_learning_dataset.png" width="500"/>
 
 Once the initial dataset was created, we also augmented the dataset by duplicating and modifying the original images. For each original image, we did the following:
 
