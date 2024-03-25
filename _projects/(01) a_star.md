@@ -86,5 +86,5 @@ On the other hand, the course grid is able to complete far more precise actions,
 <br>
 
 <p class="text-center">
-{% include elements/button.html link="https://github.com/scferro/me469_hw1" text="GitHub" %}
+{% include elements/button.html link="https://github.com/scferro/a_star_path_planning" text="GitHub" %}
 </p>

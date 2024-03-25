@@ -140,5 +140,5 @@ The variable newSpread is the maximum x/y distance the new particle can be from 
 From there, the belief state is updated with the new particles. Until a new measurement is registered, the model will move both the high probability average estimate point and every particle in the belief state according to the motion model and the odometry data. When there is a new measurement, the process will be repeated by calculating probabilities for the existing particles, selecting a new high probability average point, and generating another new particle set. 
 
 <p class="text-center">
-{% include elements/button.html link="https://github.com/scferro/me469_hw0" text="GitHub" %}
+{% include elements/button.html link="https://github.com/scferro/particle_filter_localization" text="GitHub" %}
 </p>
