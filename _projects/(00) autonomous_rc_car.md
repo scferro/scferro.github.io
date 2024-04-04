@@ -154,6 +154,8 @@ Finally, a point-to-point driving mode was implemented for driving a "race track
 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/car_mapping.gif" width="400"/> <img src="{{ site.url }}{{ site.baseurl }}/assets/car_sim_env.png " width="400"/>
 
+<img src="{{ site.url }}{{ site.baseurl }}/assets/car_mapping_2.gif"/>
+
 Once an accurate map is generated, it can be saved using the start but"ton on the controller. The next step in this process is planning the actual race path. This again involves slowly driving the car along the path you want it to follow. Once you reach the end, the desired path can be saved as a CSV file containing all the poses of the robot in the path. Now the robot is ready to drive the path. 
 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/car_path.gif"/>
@@ -170,7 +172,11 @@ This navigation was also tested on the real robot, and the results can be seen i
 ### Path Optimization
 To create the most efficient for the robot, I created a path optimization function that worked by minimizing turn radii and maximizing straight segments. This function iteratively adjusts the positions of the poses in the path recorded by the robot when planning a racing path.  The optimization process considers the angular difference between the segments created by consecutive poses and attempts to smooth these by slightly shifting the waypoints. The algorithm also ensures the path remains within navigable space by checking for obstacles within a certain radius of each pose. The robot uses the costmap generated during the SLAM mapping phase to determine if a given location is safe or unsafe. 
 
-This optimization aims to produce a path that is easier for the robot to follow, with fewer sharp turns and more consistent straight lines. This allows the robot to travel as fast as possible when racing from point to point. Below is an example of the robot planning a path through a complex environment. Additionally, there is a comparison of the raw path and the optimized path saved by the robot. 
+This optimization aims to produce a path that is easier for the robot to follow, with fewer sharp turns and more consistent straight lines. It also removes errors in the path that are the result of the robot relocating itself during the planning process. These changes allow the robot to travel as fast as possible when racing from point to point. Below is an example of the robot planning a path through a complex environment. Additionally, there is a comparison of the raw path and the optimized path saved by the robot. 
+
+<img src="{{ site.url }}{{ site.baseurl }}/assets/car_path_optim.gif"/>
+
+<img src="{{ site.url }}{{ site.baseurl }}/assets/car_path_optim.png"/>
 
 
 ### Conclusions and Future Work
