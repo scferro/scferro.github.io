@@ -1,11 +1,11 @@
 ---
-name: Autonomous RC Car Build
+name: Autonomous Car Robot Build
 tools: [ROS 2, SLAM, C++, Python, Sensor Fusion, PID Control, Isaac Sim]
 image: https://scferro.github.io/assets/car_main.gif
-description: Built a 3D printed RC-style car and programmed it to drive autonomously.
+description: Built a 3D printed car robot and programmed it to drive autonomously.
 ---
 
-# 3D Printed Autonomous RC Car Build
+# 3D Printed Autonomous Car Robot Build
 <br>
 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/car_main.jpg"/>
@@ -13,7 +13,7 @@ description: Built a 3D printed RC-style car and programmed it to drive autonomo
 <br>
 
 ### Overview
-For this project, I built an autonomous RC car from scratch and programmed it to drive autonomously. I created a set of ROS 2 packages it to allow the car to drag race with traction control, drive from point to point, and race laps. I also used NVidia Isaac Sim to create an environment for testing and tuning new code before deploying it on the robot itself. 
+For this project, I built an autonomous car robot from scratch and programmed it to drive autonomously. I created a set of ROS 2 packages it to allow the car to drag race with traction control, drive from point to point, and race laps. I also used NVidia Isaac Sim to create an environment for testing and tuning new code before deploying it on the robot itself. 
 
 ### Video Demo
 
@@ -28,7 +28,7 @@ allowfullscreen></iframe>
 
 ### Project Objectives
 This project had several goals that helped to set the direction of the project and guided the design process:
-- Build an autonomous RC-style car that could be controlled using ROS 2
+- Build an autonomous car robot that could be controlled using ROS 2
 - Create ROS 2 packages to control the car to drive and race autonomously
 - Create a well documented and reliable platform that can be used by myself and other students for future projects involving Ackermann-style robots
 
@@ -165,6 +165,12 @@ Throttle control works in a very similar way. The robot first looks at a pose 6 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/car_auto_drive.gif"/>
 
 This navigation was also tested on the real robot, and the results can be seen in the video demo. Both slam and path planning are much noisier outside the sim and will require additional tuning to optimize performance. 
+
+
+### Path Optimization
+To create the most efficient for the robot, I created a path optimization function that worked by minimizing turn radii and maximizing straight segments. This function iteratively adjusts the positions of the poses in the path recorded by the robot when planning a racing path.  The optimization process considers the angular difference between the segments created by consecutive poses and attempts to smooth these by slightly shifting the waypoints. The algorithm also ensures the path remains within navigable space by checking for obstacles within a certain radius of each pose. The robot uses the costmap generated during the SLAM mapping phase to determine if a given location is safe or unsafe. 
+
+This optimization aims to produce a path that is easier for the robot to follow, with fewer sharp turns and more consistent straight lines. This allows the robot to travel as fast as possible when racing from point to point. Below is an example of the robot planning a path through a complex environment. Additionally, there is a comparison of the raw path and the optimized path saved by the robot. 
 
 
 ### Conclusions and Future Work
