@@ -180,7 +180,7 @@ This optimization aims to produce a path that is easier for the robot to follow,
 
 
 ### Conclusions and Future Work
-Overall, this project was very successful. I built the robot from scratch and was able to get it to drag race at high speed, map environments with Slam Toolbox, and plan and drive paths with the robot. That being said, there is still lot's that can be done with this robot platform. Some things I would still like to improve are:
+Overall, this project was very successful. I built the robot from scratch and created packages to drag race at high speed, map environments with SLAM Toolbox, and plan and drive paths with the robot. That being said, there is still lot's that can be done with this platform. Some things I would still like to improve are:
 - Faster autonomous driving
 - More accurate physics simulation in Isaac Sim
 - Significant tuning and development of the path following algorithm 
