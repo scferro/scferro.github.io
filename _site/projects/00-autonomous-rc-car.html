@@ -21,12 +21,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Autonomous RC Car Build">
-  <meta property="og:description" content="Built a 3D printed RC-style car and programmed it to drive autonomously.">
+  <meta property="og:title" content="Autonomous Car Robot Build">
+  <meta property="og:description" content="Built a 3D printed car robot and programmed it to drive autonomously.">
   <meta property="og:image" content="https://scferro.github.io/assets/car_main.gif">
 
-  <title>Autonomous RC Car Build</title>
-  <meta name="description" content="Built a 3D printed RC-style car and programmed it to drive autonomously.">
+  <title>Autonomous Car Robot Build</title>
+  <meta name="description" content="Built a 3D printed car robot and programmed it to drive autonomously.">
 
   <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
 
@@ -76,7 +76,7 @@
 
 </nav>
     <div class="col-lg-10 mx-auto mt-5 markdown-body">
-  <h1 id="3d-printed-autonomous-rc-car-build">3D Printed Autonomous RC Car Build</h1>
+  <h1 id="3d-printed-autonomous-car-robot-build">3D Printed Autonomous Car Robot Build</h1>
 <p><br /></p>
 
 <p><img src="http://localhost:4000/assets/car_main.jpg" /></p>
@@ -84,7 +84,7 @@
 <p><br /></p>
 
 <h3 id="overview">Overview</h3>
-<p>For this project, I built an autonomous RC car from scratch and programmed it to drive autonomously. I created a set of ROS 2 packages it to allow the car to drag race with traction control, drive from point to point, and race laps. I also used NVidia Isaac Sim to create an environment for testing and tuning new code before deploying it on the robot itself.</p>
+<p>For this project, I built an autonomous car robot from scratch and programmed it to drive autonomously. I created a set of ROS 2 packages it to allow the car to drag race with traction control, drive from point to point, and race laps. I also used NVidia Isaac Sim to create an environment for testing and tuning new code before deploying it on the robot itself.</p>
 
 <h3 id="video-demo">Video Demo</h3>
 
@@ -94,7 +94,7 @@
 <h3 id="project-objectives">Project Objectives</h3>
 <p>This project had several goals that helped to set the direction of the project and guided the design process:</p>
 <ul>
-  <li>Build an autonomous RC-style car that could be controlled using ROS 2</li>
+  <li>Build an autonomous car robot that could be controlled using ROS 2</li>
   <li>Create ROS 2 packages to control the car to drive and race autonomously</li>
   <li>Create a well documented and reliable platform that can be used by myself and other students for future projects involving Ackermann-style robots</li>
 </ul>
@@ -213,6 +213,8 @@ v_odom = (a * v_imu) + ((1 - a) * v_encoder)
 
 <p><img src="http://localhost:4000/assets/car_mapping.gif" width="400" /> <img src="http://localhost:4000/assets/car_sim_env.png " width="400" /></p>
 
+<p><img src="http://localhost:4000/assets/car_mapping_2.gif" /></p>
+
 <p>Once an accurate map is generated, it can be saved using the start but”ton on the controller. The next step in this process is planning the actual race path. This again involves slowly driving the car along the path you want it to follow. Once you reach the end, the desired path can be saved as a CSV file containing all the poses of the robot in the path. Now the robot is ready to drive the path.</p>
 
 <p><img src="http://localhost:4000/assets/car_path.gif" /></p>
@@ -225,8 +227,17 @@ v_odom = (a * v_imu) + ((1 - a) * v_encoder)
 
 <p>This navigation was also tested on the real robot, and the results can be seen in the video demo. Both slam and path planning are much noisier outside the sim and will require additional tuning to optimize performance.</p>
 
+<h3 id="path-optimization">Path Optimization</h3>
+<p>To create the most efficient for the robot, I created a path optimization function that worked by minimizing turn radii and maximizing straight segments. This function iteratively adjusts the positions of the poses in the path recorded by the robot when planning a racing path.  The optimization process considers the angular difference between the segments created by consecutive poses and attempts to smooth these by slightly shifting the waypoints. The algorithm also ensures the path remains within navigable space by checking for obstacles within a certain radius of each pose. The robot uses the costmap generated during the SLAM mapping phase to determine if a given location is safe or unsafe.</p>
+
+<p>This optimization aims to produce a path that is easier for the robot to follow, with fewer sharp turns and more consistent straight lines. It also removes errors in the path that are the result of the robot relocating itself during the planning process. These changes allow the robot to travel as fast as possible when racing from point to point. Below is an example of the robot planning a path through a complex environment. Additionally, there is a comparison of the raw path and the optimized path saved by the robot.</p>
+
+<p><img src="http://localhost:4000/assets/car_path_optim.gif" /></p>
+
+<p><img src="http://localhost:4000/assets/car_path_optim.png" /></p>
+
 <h3 id="conclusions-and-future-work">Conclusions and Future Work</h3>
-<p>Overall, this project was very successful. I built the robot from scratch and was able to get it to drag race at high speed, map environments with Slam Toolbox, and plan and drive paths with the robot. That being said, there is still lot’s that can be done with this robot platform. Some things I would still like to improve are:</p>
+<p>Overall, this project was very successful. I built the robot from scratch and created packages to drag race at high speed, map environments with SLAM Toolbox, and plan and drive paths with the robot. That being said, there is still lot’s that can be done with this platform. Some things I would still like to improve are:</p>
 <ul>
   <li>Faster autonomous driving</li>
   <li>More accurate physics simulation in Isaac Sim</li>
@@ -234,7 +245,7 @@ v_odom = (a * v_imu) + ((1 - a) * v_encoder)
   <li>Use reinforcement learning to further optimize car behavior at high speeds</li>
 </ul>
 
-<p>I have also been working on a visual odometry solution for this robot use a neural network. This would allow the robot to detect walls and other obstacles using the RealSense camera, then navigate away from them. This could be used for to improve the lane centering while drag racing, or improve odometry when navigating. Stay tuned for more!</p>
+<p>I have also been working on a visual odometry solution for this robot use a neural network. This allows the robot to detect walls and other obstacles using the RealSense camera, then navigate away from them. Read more about this project <a href="https://scferro.github.io/projects/09-ml-path-finding" target="_blank"><u>here</u></a>.</p>
 
 <p class="text-center">
 <a class="m-1 btn btn-outline-primary btn-2 " href="https://github.com/scferro/autonomous_rc_car">
