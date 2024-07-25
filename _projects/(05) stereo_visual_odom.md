@@ -1,11 +1,11 @@
 ---
-name: Realtime Stereo Visual Odometry
+name: Real Time Stereo Visual Odometry
 tools: [Python, OpenCV, Visual Odometry, Deep Learning]
 image: https://scferro.github.io/assets/odom_main.gif
 description: Used stereo images to track the position of a camera in real time. 
 ---
 
-# Realtime Stereo Visual Odometry
+# Real Time Stereo Visual Odometry
 <br>
 
 ### Overview
