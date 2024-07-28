@@ -1,7 +1,7 @@
 ---
 name: Quadruped Walking with Reinforcement Learning
-tools: [Python, Path Planning]
-image: https://scferro.github.io/assets/rrt_main.png
+tools: [Python, PyTorch, Deep Reinforcement Learning]
+image: https://scferro.github.io/assets/deep_rl_main.gif
 description: Used the Soft Actor-Critic algorithm to teach a quadruped robot to walk in simulation. 
 ---
 
