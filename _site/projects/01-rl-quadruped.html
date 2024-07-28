@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<!--
+  portfolYOU Jekyll theme by Youssef Raafat
+  Free for personal and commercial use under the MIT license
+  https://github.com/YoussefRaafatNasry/portfolYOU
+-->
+
+<html lang="en" class="h-100">
+
+<head>
+
+  
+  
+  
+
+  
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Quadruped Walking with Reinforcement Learning">
+  <meta property="og:description" content="Used the Soft Actor-Critic algorithm to teach a quadruped robot to walk in simulation.">
+  <meta property="og:image" content="https://scferro.github.io/assets/rrt_main.png">
+
+  <title>Quadruped Walking with Reinforcement Learning</title>
+  <meta name="description" content="Used the Soft Actor-Critic algorithm to teach a quadruped robot to walk in simulation.">
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
+
+  <!-- Theme style -->
+  <script src="/assets/js/theme.js"></script>
+
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+
+  <!-- Animate CSS CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+</head>
+
+
+<body class="h-100 d-flex flex-column">
+
+  <main class="flex-shrink-0 container mt-5">
+    <nav class="navbar navbar-expand-lg navbar-themed">
+
+  <a class="navbar-brand" href="/"><h5><b>STEPHEN FERRO</b></h5></a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="fas fa-1x fa-bars text-themed"></i>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav ml-auto"><a class="nav-item nav-link active" href="/projects/">Projects</a>
+
+      <a class="nav-item nav-link " href="/about/">About</a>
+
+      <a class="nav-item nav-link " href="/contact/">Contact</a>
+
+      <a class="nav-item nav-link " href="/resume/">Resume</a>
+
+      
+
+      <span id="theme-toggler" class="nav-item nav-link" role="button" onclick="toggleTheme()"></span>
+    </div>
+  </div>
+
+</nav>
+    <div class="col-lg-10 mx-auto mt-5 markdown-body">
+  <h1 id="quadruped-walking-with-reinforcement-learning">Quadruped Walking with Reinforcement Learning</h1>
+<p><br /></p>
+
+<h3 id="overview">Overview</h3>
+<p>In this project, I applied reinforcement learning to teach a simulated ant to walk in the Gym Ant environment, focusing on the Soft Actor-Critic (SAC) algorithm. SAC, an off-policy method excelling in continuous action spaces, uses a maximum entropy framework to balance exploration and exploitation. I aimed to achieve both quick learning and high performance in the ant’s walking behavior. The project involved fine-tuning algorithm aspects and customizing the reward function. Testing on both the Inverted Double Pendulum and Ant environments showed successful outcomes, with notable improvements in the ant’s walking smoothness using a tailored reward function. This work demonstrates the effectiveness of modern reinforcement learning in tackling complex robotic control problems and highlights the importance of careful algorithm selection and reward function design in achieving desired behaviors.</p>
+
+<h3 id="results-and-observations">Results and Observations</h3>
+<ul>
+  <li><strong>Training Efficiency</strong>: The SAC demonstrated rapid learning capabilities, significantly improving the agent’s performance in navigating the complex Ant environment.</li>
+  <li><strong>Algorithmic Insights</strong>: The project underscored the importance of parameter tuning and algorithmic adjustments to address specific challenges such as the exploration-exploitation trade-off and policy stability.</li>
+</ul>
+
+<h3 id="technical-approach">Technical Approach</h3>
+<ul>
+  <li><strong>Algorithm:</strong> Utilization of the Soft Actor-Critic, a model-free, off-policy algorithm that operates on the principles of maximizing entropy for robust learning.</li>
+  <li><strong>Environment Setup:</strong> Configurations included defining intricate state and action spaces, tuning parameters for optimal performance, and managing the replay buffer for experience replay.</li>
+  <li><strong>Network Design:</strong>
+    <ol>
+      <li>Policy Network (Actor): Comprises three hidden layers with 128 neurons each, leading to outputs for action mean and log standard deviation, essential for the stochastic policy behavior in SAC.</li>
+      <li>Critic Network (Q-Network): Integral for estimating the Q-values necessary for the critic aspect of SAC, using a multi-layer design to process state-action pairs.</li>
+    </ol>
+  </li>
+</ul>
+
+<h3 id="conclusions-and-future-work">Conclusions and Future Work</h3>
+<p>The project not only showcased the SAC’s potential in a complex simulation but also highlighted the critical aspects of implementing advanced reinforcement algorithms in environments with large state and action spaces. It sets the stage for further explorations into more sophisticated environments and more complex tasks in reinforcement learning.</p>
+
+<p>Future directions include scaling the implementation to other challenging environments, exploring the impacts of different hyperparameters on learning efficiency, and integrating multi-agent dynamics for broader applicability.</p>
+
+<p class="text-center">
+<a class="m-1 btn btn-outline-primary btn-2 " href="https://github.com/scferro/deep_rl_quadruped_walking">
+  GitHub
+</a>
+</p>
+
+</div>
+  </main>
+  <footer class="mt-auto py-3 text-center">
+
+  <small class="text-muted mb-2">
+    <i class="fas fa-code"></i> with <i class="fas fa-heart"></i>
+    by <strong>Stephen Ferro</strong>
+  </small>
+
+  <div class="container-fluid justify-content-center"><a class="social mx-1"  href="mailto:stephenferro2024@u.northwestern.edu"
+       style="color: #6c757d"
+       onMouseOver="this.style.color='#db4437'"
+       onMouseOut="this.style.color='#6c757d'">
+      <i class="fas fa-envelope fa-1x"></i>
+    </a><a class="social mx-1"  href="https://www.github.com/scferro"
+       style="color: #6c757d"
+       onMouseOver="this.style.color='#333333'"
+       onMouseOut="this.style.color='#6c757d'">
+      <i class="fab fa-github fa-1x"></i>
+    </a><a class="social mx-1"  href="https://www.linkedin.com/in/scferro/"
+       style="color: #6c757d"
+       onMouseOver="this.style.color='#007bb5'"
+       onMouseOut="this.style.color='#6c757d'">
+      <i class="fab fa-linkedin-in fa-1x"></i>
+    </a><a class="social mx-1"  href="https://www.youtube.com//@StephenFerro"
+       style="color: #6c757d"
+       onMouseOver="this.style.color='#ff0000'"
+       onMouseOut="this.style.color='#6c757d'">
+      <i class="fab fa-youtube fa-1x"></i>
+    </a>
+
+</div><small id="attribution">
+    theme <a href="https://github.com/YoussefRaafatNasry/portfolYOU">portfolYOU</a>
+  </small>
+
+</footer>
+
+  
+  <!-- GitHub Buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<!-- jQuery CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+
+<!-- Bootstrap JS CDN -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<!-- wow.js CDN & Activation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
+<script> new WOW().init(); </script>
+
+<!-- Initialize all tooltips -->
+<script>
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+</body>
+
+</html>
