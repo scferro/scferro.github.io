@@ -12,6 +12,11 @@ description: Used the Soft Actor-Critic algorithm to teach a quadruped robot to 
 In this project, I applied reinforcement learning to teach a simulated ant to walk in the Gym Ant environment, focusing on the Soft Actor-Critic (SAC) algorithm. SAC, an off-policy method excelling in continuous action spaces, uses a maximum entropy framework to balance exploration and exploitation. I aimed to achieve both quick learning and high performance in the ant's walking behavior. The project involved fine-tuning algorithm aspects and customizing the reward function. Testing on both the Inverted Double Pendulum and Ant environments showed successful outcomes, with notable improvements in the ant's walking smoothness using a tailored reward function. This work demonstrates the effectiveness of modern reinforcement learning in tackling complex robotic control problems and highlights the importance of careful algorithm selection and reward function design in achieving desired behaviors.
 
 
+### Demo Video
+
+UNDER CONSTRUCTION. CHECK BACK SOON FOR AN UPDATE!!
+
+
 
 ### Results and Observations
 * **Training Efficiency**: The SAC demonstrated rapid learning capabilities, significantly improving the agent's performance in navigating the complex Ant environment.
