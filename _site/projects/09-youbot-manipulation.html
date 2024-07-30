@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<!--
+  portfolYOU Jekyll theme by Youssef Raafat
+  Free for personal and commercial use under the MIT license
+  https://github.com/YoussefRaafatNasry/portfolYOU
+-->
+
+<html lang="en" class="h-100">
+
+<head>
+
+  
+  
+  
+
+  
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="YouBot Mobile Manipulation Simulation">
+  <meta property="og:description" content="Simulated a KUKA YouBot picking up and placing a block at user-specified positions.">
+  <meta property="og:image" content="https://scferro.github.io/assets/youbot.gif">
+
+  <title>YouBot Mobile Manipulation Simulation</title>
+  <meta name="description" content="Simulated a KUKA YouBot picking up and placing a block at user-specified positions.">
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
+
+  <!-- Theme style -->
+  <script src="/assets/js/theme.js"></script>
+
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+
+  <!-- Animate CSS CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+</head>
+
+
+<body class="h-100 d-flex flex-column">
+
+  <main class="flex-shrink-0 container mt-5">
+    <nav class="navbar navbar-expand-lg navbar-themed">
+
+  <a class="navbar-brand" href="/"><h5><b>STEPHEN FERRO</b></h5></a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="fas fa-1x fa-bars text-themed"></i>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav ml-auto"><a class="nav-item nav-link active" href="/projects/">Projects</a>
+
+      <a class="nav-item nav-link " href="/about/">About</a>
+
+      <a class="nav-item nav-link " href="/contact/">Contact</a>
+
+      <a class="nav-item nav-link " href="/resume/">Resume</a>
+
+      
+
+      <span id="theme-toggler" class="nav-item nav-link" role="button" onclick="toggleTheme()"></span>
+    </div>
+  </div>
+
+</nav>
+    <div class="col-lg-10 mx-auto mt-5 markdown-body">
+  <h1 id="youbot-mobile-manipulation-simulation">Youbot Mobile Manipulation Simulation</h1>
+<p><br /></p>
+
+<h3 id="overview">Overview</h3>
+<p>This project aims to control a Youbot to pick and place a block with user-specific positions and then simulate it in Coppeliasim. The algorithm first generates a reference traject of the end-effector and then applies feedback control to manipulate the Youbot.</p>
+
+<h3 id="video-demo">Video Demo</h3>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/c2avjINonNs?si=JuqYFyma96Dk1KJY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+<p><br /></p>
+
+<h3 id="results">Results</h3>
+<p><br />
+Two different controllers were simulated and their performance was compared. Video of the simulations with both controllers can be seen at the top of this page.</p>
+<ol>
+  <li><strong>Best</strong>: a result with a well-tuned controller with using feed-forward and PI control:
+    <ul>
+      <li>A feed-forward-plus-PI controller with a Kp of 25 and a Ki of 0.1 was used. The error plot is shown below: <br />
+ <img src="http://localhost:4000/assets/youbot_best.png" alt="alt text" /></li>
+    </ul>
+  </li>
+  <li><strong>Overshoot</strong>: a result with a poorly-tuned controller using PI control only (no feed-forward):
+    <ul>
+      <li>A PI controller with a Kp of 5 and a Ki of 1 was used. The error plot is shown below: <br />
+ <img src="http://localhost:4000/assets/youbot_overshoot.png" alt="alt text" /></li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="simulation">Simulation</h3>
+<p>The <strong>NextState</strong> function calculates the robot’s configuration at the next time step based on the current configuration and the commanded joint speeds. The new configuration is calculated using the first-order Euler method. A time step of 0.01 seconds was used.</p>
+
+<p>The <strong>TrajectoryGenerator</strong> function outputs a trajectory for the end-effector to pick up and place the box. The generated trajectory is provided as a list of transformation matrices for the end-effector with respect to the space frame. The function requires the following transformation matrices as inputs:</p>
+<ul>
+  <li>Tse_init: The initial position of the EE relative to the space frame</li>
+  <li>Tsc_init: The initial position of the cube relative to the space frame</li>
+  <li>Tsc_final: The desired final position of the cube relative to the space frame</li>
+</ul>
+
+<p>In the output trajectory, the end-effector move through the following 8 stages of the simulation:</p>
+
+<ol>
+  <li>The EE moves from its initial configuration to a “standoff” configuration a few cm above the block.</li>
+  <li>The EE moves down to the grasp position.</li>
+  <li>The EE closes on the box.</li>
+  <li>The EE moves back up to the “standoff” configuration.</li>
+  <li>The EE moves to a “standoff” configuration above the final configuration.</li>
+  <li>The EE moves to the final configuration of the object.</li>
+  <li>The EE releases the box.</li>
+  <li>The EE moves back to the “standoff” configuration.</li>
+</ol>
+
+<p>For stages where the robot platform or arm move (as opposed to just the gripper), the algorithm uses the <strong>ScrewTrajectory</strong> function from the Modern Robotics Python library. The function takes in transformation matrices for the start and end positions of the gripper. It generates a discrete trajectory as a list of end-effector transformation matrices using the third-order/ fifth-order polynomial time-scaling method.</p>
+
+<p>The <strong>FeedbackControl</strong> function is used to command the robot to follow the generated trajectory. Joint commands for the arm joint and the wheels are calculated using the kinematic task-space feed-forward plus feedback control law, shown below. Using this method allows for the robot to correct for error in it’s current position while also anticipating the upcoming movements in the trajectory. 
+<br />
+<img src="http://localhost:4000/assets/youbot1.png" alt="alt text" /></p>
+
+<h3 id="initial-configuration">Initial Configuration</h3>
+<p><br /></p>
+<ol>
+  <li>The initial cube position in space frame is:<br />
+<img src="http://localhost:4000/assets/youbot2.png" alt="alt text" /></li>
+  <li>The final cube position in space frame is:<br />
+<img src="http://localhost:4000/assets/youbot3.png" alt="alt text" /></li>
+  <li>The initial configuration of the robot is:<br />
+```shell
+[-1, -0.5, 0.2, 0, -0.2, -0.6, -1.578, 0, 0, 0, 0, 0, 0]
+‘’’
+<br /><br /></li>
+</ol>
+
+<h3 id="joint-limit-detection">Joint Limit Detection</h3>
+<p>Joint limits are monitored by the <strong>CheckJointLimits</strong> function. This function checks if the next joint positions are outside the allowable range for the robot. If they are, it sets all values on the corresponding line of the Jacobian equal to 0. This ensures that the joint that is at it’s limits is not updated with a new position and does not pass the limit. The new Jacobian is returned and used to find the next set of velocity commands for the robot. The robot is more likely to enter strange poses and collide with itself when joint limits are turned off. Though the robot is also sometimes able to stay closer to the target Tse_d when it is allowed to ignore joint constraints, this is obviously not practical in the real world.</p>
+
+<p><img src="http://localhost:4000/assets/youbot_joint_limits.gif" alt="alt text" /></p>
+
+<p class="text-center">
+<a class="m-1 btn btn-outline-primary btn-2 " href="https://github.com/scferro/me449_capstone">
+  GitHub
+</a>
+</p>
+
+</div>
+  </main>
+  <footer class="mt-auto py-3 text-center">
+
+  <small class="text-muted mb-2">
+    <i class="fas fa-code"></i> with <i class="fas fa-heart"></i>
+    by <strong>Stephen Ferro</strong>
+  </small>
+
+  <div class="container-fluid justify-content-center"><a class="social mx-1"  href="mailto:stephenferro2024@u.northwestern.edu"
+       style="color: #6c757d"
+       onMouseOver="this.style.color='#db4437'"
+       onMouseOut="this.style.color='#6c757d'">
+      <i class="fas fa-envelope fa-1x"></i>
+    </a><a class="social mx-1"  href="https://www.github.com/scferro"
+       style="color: #6c757d"
+       onMouseOver="this.style.color='#333333'"
+       onMouseOut="this.style.color='#6c757d'">
+      <i class="fab fa-github fa-1x"></i>
+    </a><a class="social mx-1"  href="https://www.linkedin.com/in/scferro/"
+       style="color: #6c757d"
+       onMouseOver="this.style.color='#007bb5'"
+       onMouseOut="this.style.color='#6c757d'">
+      <i class="fab fa-linkedin-in fa-1x"></i>
+    </a><a class="social mx-1"  href="https://www.youtube.com//@StephenFerro"
+       style="color: #6c757d"
+       onMouseOver="this.style.color='#ff0000'"
+       onMouseOut="this.style.color='#6c757d'">
+      <i class="fab fa-youtube fa-1x"></i>
+    </a>
+
+</div><small id="attribution">
+    theme <a href="https://github.com/YoussefRaafatNasry/portfolYOU">portfolYOU</a>
+  </small>
+
+</footer>
+
+  
+  <!-- GitHub Buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<!-- jQuery CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+
+<!-- Bootstrap JS CDN -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<!-- wow.js CDN & Activation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
+<script> new WOW().init(); </script>
+
+<!-- Initialize all tooltips -->
+<script>
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+</body>
+
+</html>
