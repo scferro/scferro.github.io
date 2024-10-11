@@ -14,13 +14,7 @@ In this project, I applied reinforcement learning to teach a simulated ant to wa
 
 ### Demo Video
 
-UNDER CONSTRUCTION. CHECK BACK SOON FOR AN UPDATE!!
-
-
-
-### Results and Observations
-* **Training Efficiency**: The SAC demonstrated rapid learning capabilities, significantly improving the agent's performance in navigating the complex Ant environment.
-* **Algorithmic Insights**: The project underscored the importance of parameter tuning and algorithmic adjustments to address specific challenges such as the exploration-exploitation trade-off and policy stability.
+<iframe width="800" height="450" src="https://www.youtube.com/embed/le2q-RgfmV4?si=99McZrRgNCbHy_Ha" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 ### Technical Approach
@@ -29,6 +23,71 @@ UNDER CONSTRUCTION. CHECK BACK SOON FOR AN UPDATE!!
 * **Network Design:**
     1. Policy Network (Actor): Comprises three hidden layers with 128 neurons each, leading to outputs for action mean and log standard deviation, essential for the stochastic policy behavior in SAC.
     2. Critic Network (Q-Network): Integral for estimating the Q-values necessary for the critic aspect of SAC, using a multi-layer design to process state-action pairs.
+* **Hyper-Parameters:** The following hyper-parameters were used in this model. These were largely based on the parameters used in the [original SAC paper](https://arxiv.org/pdf/1801.01290)
+    - Number of episodes: 1000 (for double pendulum), 9999 (for quadruped)
+    - Batch size: 256
+    - Discount factor (gamma): 0.99
+    - Target smoothing coefficient (tau): 0.005
+    - Entropy coefficient (alpha): 0.2
+    - Learning rate: 3e-4 (for all optimizers)
+    - Replay buffer size: 1,000,000
+    - Hidden layer size: 128 (for both policy and Q-networks)
+    - Number of hidden layers: 3 (for both policy and Q-networks)
+    - Action space: Continuous
+    - State space: Continuous
+    - Optimizer: Adam
+    - Activation function: ReLU
+    - Environment: Ant-v4 (with custom parameters)
+    - Use of contact forces: True
+    - Contact cost weight: 0.2
+    - Healthy z-range: (0.3, 1.0)
+    - Maximum episode steps: 1000 (default for Ant-v4)
+    - Inference frequency: 5.0 Hz
+    - Servo frequency: 10.0 Hz
+
+**Soft Actor Critic Model:**
+Soft Actor-Critic (SAC) is a robust reinforcement learning algorithm for continuous action spaces. It blends actor-critic methods with entropy maximization, using an actor to learn a flexible policy and a critic to estimate value. SAC shines in complex environments, offering good sample efficiency and stable training. It's great at finding diverse solutions and avoiding getting stuck in suboptimal strategies. On the flip side, SAC can be computationally heavy and needs careful tuning.
+
+
+### Results and Observations
+* **Training Efficiency:** The SAC demonstrated rapid learning capabilities, significantly improving the agent's performance in navigating the complex Ant environment.
+* **Algorithmic Insights:** The project underscored the importance of parameter tuning and algorithmic adjustments to address specific challenges such as the exploration-exploitation trade-off and policy stability.
+* **Final Reward:** The agent achieved a final reward of 5660.59 after 9999 episodes of training, indicating successful learning of the walking task.
+
+**Training Progress Graphs:**
+
+These graphs show the training progress for the inverted pendulum and ant:
+
+<img src="{{ site.url }}{{ site.baseurl }}/assets/double_pend.png" />
+
+<img src="{{ site.url }}{{ site.baseurl }}/assets/ant_10000.png" />
+
+<br>
+
+**Key Observations:**
+* Double Pendulum Environment:
+    * Performance remains low and stable for the first 400 episodes.
+    * A dramatic jump in performance occurs around episode 400.
+    * After the jump, rewards quickly rise to about 9000.
+    * High performance is mostly maintained after this jump, with occasional sharp drops.
+    * The running average closely tracks the episode reward due to the sudden improvement.
+
+* Ant Environment:
+    * Initial learning is slow, with a sudden improvement around episode 2000.
+    * Performance plateaus around 6000 reward for extended periods.
+    * There are two major drops in performance around episodes 4000 and 8000.
+    * The agent recovers quickly from these drops, suggesting robust learning as well as policy exploration.
+    * Episode rewards (blue line) show high variability throughout training.
+    * The running average (orange line) smooths these fluctuations, revealing overall trends.
+
+* Comparison:
+    * Ant shows a more complex learning pattern with multiple phases, while Double Pendulum has a single, dramatic breakthrough.
+    * Both environments reach similar peak rewards (around 6000-9000), but through very different trajectories.
+    * Double Pendulum learns more abruptly, while Ant shows gradual improvement punctuated by sudden changes.
+    * Ant training appears more unstable overall, with frequent fluctuations and major drops in performance.
+
+
+These results demonstrate the effectiveness of the SAC algorithm in tackling the complex task of quadruped locomotion, showcasing both rapid learning and high final performance.
 
 
 ### Conclusions and Future Work

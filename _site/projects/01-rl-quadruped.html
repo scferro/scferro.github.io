@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
 <!--
-  portfolYOU Jekyll theme by Youssef Raafat
+  portfolYOU Jekyll theme by yousinix
   Free for personal and commercial use under the MIT license
-  https://github.com/YoussefRaafatNasry/portfolYOU
+  https://github.com/yousinix/portfolYOU
 -->
 
 <html lang="en" class="h-100">
@@ -84,13 +84,7 @@
 
 <h3 id="demo-video">Demo Video</h3>
 
-<p>UNDER CONSTRUCTION. CHECK BACK SOON FOR AN UPDATE!!</p>
-
-<h3 id="results-and-observations">Results and Observations</h3>
-<ul>
-  <li><strong>Training Efficiency</strong>: The SAC demonstrated rapid learning capabilities, significantly improving the agent’s performance in navigating the complex Ant environment.</li>
-  <li><strong>Algorithmic Insights</strong>: The project underscored the importance of parameter tuning and algorithmic adjustments to address specific challenges such as the exploration-exploitation trade-off and policy stability.</li>
-</ul>
+<iframe width="800" height="450" src="https://www.youtube.com/embed/le2q-RgfmV4?si=99McZrRgNCbHy_Ha" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
 
 <h3 id="technical-approach">Technical Approach</h3>
 <ul>
@@ -102,7 +96,84 @@
       <li>Critic Network (Q-Network): Integral for estimating the Q-values necessary for the critic aspect of SAC, using a multi-layer design to process state-action pairs.</li>
     </ol>
   </li>
+  <li><strong>Hyper-Parameters:</strong> The following hyper-parameters were used in this model. These were largely based on the parameters used in the <a href="https://arxiv.org/pdf/1801.01290">original SAC paper</a>
+    <ul>
+      <li>Number of episodes: 1000 (for double pendulum), 9999 (for quadruped)</li>
+      <li>Batch size: 256</li>
+      <li>Discount factor (gamma): 0.99</li>
+      <li>Target smoothing coefficient (tau): 0.005</li>
+      <li>Entropy coefficient (alpha): 0.2</li>
+      <li>Learning rate: 3e-4 (for all optimizers)</li>
+      <li>Replay buffer size: 1,000,000</li>
+      <li>Hidden layer size: 128 (for both policy and Q-networks)</li>
+      <li>Number of hidden layers: 3 (for both policy and Q-networks)</li>
+      <li>Action space: Continuous</li>
+      <li>State space: Continuous</li>
+      <li>Optimizer: Adam</li>
+      <li>Activation function: ReLU</li>
+      <li>Environment: Ant-v4 (with custom parameters)</li>
+      <li>Use of contact forces: True</li>
+      <li>Contact cost weight: 0.2</li>
+      <li>Healthy z-range: (0.3, 1.0)</li>
+      <li>Maximum episode steps: 1000 (default for Ant-v4)</li>
+      <li>Inference frequency: 5.0 Hz</li>
+      <li>Servo frequency: 10.0 Hz</li>
+    </ul>
+  </li>
 </ul>
+
+<p><strong>Soft Actor Critic Model:</strong>
+Soft Actor-Critic (SAC) is a robust reinforcement learning algorithm for continuous action spaces. It blends actor-critic methods with entropy maximization, using an actor to learn a flexible policy and a critic to estimate value. SAC shines in complex environments, offering good sample efficiency and stable training. It’s great at finding diverse solutions and avoiding getting stuck in suboptimal strategies. On the flip side, SAC can be computationally heavy and needs careful tuning.</p>
+
+<h3 id="results-and-observations">Results and Observations</h3>
+<ul>
+  <li><strong>Training Efficiency:</strong> The SAC demonstrated rapid learning capabilities, significantly improving the agent’s performance in navigating the complex Ant environment.</li>
+  <li><strong>Algorithmic Insights:</strong> The project underscored the importance of parameter tuning and algorithmic adjustments to address specific challenges such as the exploration-exploitation trade-off and policy stability.</li>
+  <li><strong>Final Reward:</strong> The agent achieved a final reward of 5660.59 after 9999 episodes of training, indicating successful learning of the walking task.</li>
+</ul>
+
+<p><strong>Training Progress Graphs:</strong></p>
+
+<p>These graphs show the training progress for the inverted pendulum and ant:</p>
+
+<p><img src="http://localhost:4000/assets/double_pend.png" /></p>
+
+<p><img src="http://localhost:4000/assets/ant_10000.png" /></p>
+
+<p><br /></p>
+
+<p><strong>Key Observations:</strong></p>
+<ul>
+  <li>Double Pendulum Environment:
+    <ul>
+      <li>Performance remains low and stable for the first 400 episodes.</li>
+      <li>A dramatic jump in performance occurs around episode 400.</li>
+      <li>After the jump, rewards quickly rise to about 9000.</li>
+      <li>High performance is mostly maintained after this jump, with occasional sharp drops.</li>
+      <li>The running average closely tracks the episode reward due to the sudden improvement.</li>
+    </ul>
+  </li>
+  <li>Ant Environment:
+    <ul>
+      <li>Initial learning is slow, with a sudden improvement around episode 2000.</li>
+      <li>Performance plateaus around 6000 reward for extended periods.</li>
+      <li>There are two major drops in performance around episodes 4000 and 8000.</li>
+      <li>The agent recovers quickly from these drops, suggesting robust learning as well as policy exploration.</li>
+      <li>Episode rewards (blue line) show high variability throughout training.</li>
+      <li>The running average (orange line) smooths these fluctuations, revealing overall trends.</li>
+    </ul>
+  </li>
+  <li>Comparison:
+    <ul>
+      <li>Ant shows a more complex learning pattern with multiple phases, while Double Pendulum has a single, dramatic breakthrough.</li>
+      <li>Both environments reach similar peak rewards (around 6000-9000), but through very different trajectories.</li>
+      <li>Double Pendulum learns more abruptly, while Ant shows gradual improvement punctuated by sudden changes.</li>
+      <li>Ant training appears more unstable overall, with frequent fluctuations and major drops in performance.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>These results demonstrate the effectiveness of the SAC algorithm in tackling the complex task of quadruped locomotion, showcasing both rapid learning and high final performance.</p>
 
 <h3 id="conclusions-and-future-work">Conclusions and Future Work</h3>
 <p>The project not only showcased the SAC’s potential in a complex simulation but also highlighted the critical aspects of implementing advanced reinforcement algorithms in environments with large state and action spaces. It sets the stage for further explorations into more sophisticated environments and more complex tasks in reinforcement learning.</p>
@@ -147,7 +218,7 @@
     </a>
 
 </div><small id="attribution">
-    theme <a href="https://github.com/YoussefRaafatNasry/portfolYOU">portfolYOU</a>
+    theme <a href="https://github.com/yousinix/portfolYOU">portfolYOU</a>
   </small>
 
 </footer>
