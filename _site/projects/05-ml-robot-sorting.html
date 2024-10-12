@@ -21,11 +21,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Robot Arm Block Sorting with Active Human Feedback">
+  <meta property="og:title" content="Robot Arm Block Sorting with Online Human Feedback">
   <meta property="og:description" content="Created ROS 2 packages to control a robot arm to sort blocks based on human feedback.">
   <meta property="og:image" content="https://scferro.github.io/assets/blocks_main.gif">
 
-  <title>Robot Arm Block Sorting with Active Human Feedback</title>
+  <title>Robot Arm Block Sorting with Online Human Feedback</title>
   <meta name="description" content="Created ROS 2 packages to control a robot arm to sort blocks based on human feedback.">
 
   <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
@@ -76,18 +76,248 @@
 
 </nav>
     <div class="col-lg-10 mx-auto mt-5 markdown-body">
-  <h1 id="robot-arm-block-sorting-with-active-human-feedback">Robot Arm Block Sorting with Active Human Feedback</h1>
+  <h1 id="robot-arm-block-sorting-with-online-human-feedback">Robot Arm Block Sorting with Online Human Feedback</h1>
 <p><br /></p>
 
 <h3 id="overview">Overview</h3>
 
-<p>UNDER CONSTRUCTION. CHECK BACK SOON FOR AN UPDATE!</p>
+<p>This project aimed to create an intelligent sorting system using a Franka Panda robotic arm. The system’s primary goal was to autonomously detect, classify, and sort blocks into two distinct piles based on their visual characteristics. Computer vision techniques and machine learning were combined to process depth and color images, accurately identifying and locating blocks in the robot’s workspace. A neural network, capable of both pre-training and online learning through human feedback, made real-time decisions on how to categorize each block. The system’s adaptive learning capability allows it to improve its sorting accuracy over time, making it suitable for dynamic environments and changing sorting criteria.</p>
 
-<!-- <p class="text-center">
-<a class="m-1 btn btn-outline-primary btn-2 " href="https://github.com/scferro/pen_challenge">
+<h3 id="demo-video">Demo Video</h3>
+
+<p>VIDEO COMING SOON</p>
+
+<h3 id="block-detection">Block Detection</h3>
+
+<p><img src="http://localhost:4000/assets/franka_sorting_cv.png" /></p>
+
+<p><br /></p>
+
+<p>The block detection system employed computer vision techniques to accurately detect blocks, their dimensions, positions, and orientations. Key aspects included:</p>
+
+<ol>
+  <li>Camera Setup:
+    <ul>
+      <li>Utilized both color (RGB) and depth information from a d405 RealSense camera. This camera is optimized for close range and high accuracy.</li>
+      <li>Depth data provided 3D positioning of the table in 3d space, while color data aided in block detection and segmentation.</li>
+    </ul>
+  </li>
+  <li>Depth Segmentation:
+    <ul>
+      <li>Implemented a custom depth segmentation algorithm to isolate the table surface.</li>
+      <li>Used Gaussian blur and Canny edge detection on the depth image.</li>
+      <li>Applied Hough line transform to identify table edges.</li>
+      <li>Created a mask to separate the table surface from the background.</li>
+    </ul>
+  </li>
+  <li>Color-based Block Segmentation:
+    <ul>
+      <li>Applied color thresholding to isolate potential block regions.</li>
+      <li>Used morphological operations (opening) to reduce noise and refine block shapes.</li>
+    </ul>
+  </li>
+  <li>Contour Analysis:
+    <ul>
+      <li>Detected contours in the segmented image using cv2.findContours().</li>
+      <li>Analyzed contour properties (area, aspect ratio) to filter out non-block objects.</li>
+      <li>Used cv2.minAreaRect() to find the oriented bounding box of each block.</li>
+    </ul>
+  </li>
+  <li>3D Pose Estimation:
+    <ul>
+      <li>Calculated block orientation using the angle of the minimum area rectangle.</li>
+      <li>Estimated block dimensions using the contour’s bounding rectangle and depth information.</li>
+      <li>Depth data was used to estimate the height of the block.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>This advanced detection system demonstrated robustness to variations in lighting, block orientations, and partial occlusions, providing accurate and reliable block information for the robotic manipulation tasks.</p>
+
+<h3 id="neural-network-online-learning-and-pre-training-integration">Neural Network: Online Learning and Pre-training Integration</h3>
+
+<p>The block classification system utilized a custom Convolutional Neural Network (CNN) with a focus on online learning, supported by pre-training capabilities. This approach allowed for continuous adaptation during operation while starting from a solid baseline.</p>
+
+<p><strong>Online Learning System</strong></p>
+
+<ul>
+  <li>Real-time Adaptation:
+    <ul>
+      <li>Developed a dynamic training system integrated with the ROS2 framework.</li>
+      <li>Implemented a service call interface for on-the-fly training requests.</li>
+      <li>Used human feedback to generate labels for newly encountered blocks.</li>
+    </ul>
+  </li>
+  <li>Training Procedure:
+    <ul>
+      <li>Used a supervised learning procedure with Binary Cross-Entropy loss and Adam optimizer.</li>
+      <li>Implemented a learning rate scheduler for adaptive learning rates.</li>
+      <li>Batch size of 1 for true online learning capability.</li>
+    </ul>
+  </li>
+  <li>Data Management:
+    <ul>
+      <li>Maintained a rolling buffer of recent training examples (max 50 images).</li>
+      <li>Implemented a FIFO system to prevent catastrophic forgetting while adapting to new data.</li>
+    </ul>
+  </li>
+  <li>Adaptive Learning:
+    <ul>
+      <li>System continuously updated its model based on sorting decisions.</li>
+      <li>Implemented a confidence threshold to trigger human intervention for uncertain cases.</li>
+    </ul>
+  </li>
+  <li>Real-time Predictions:
+    <ul>
+      <li>Created a ROS2 service for real-time block classification.</li>
+      <li>Implemented batch prediction for multiple views of the same block.</li>
+      <li>Used ensemble averaging of predictions for improved robustness.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Pre-training Process</strong></p>
+
+<p><img src="http://localhost:4000/assets/segmented_3.png" /></p>
+
+<ol>
+  <li>Initial Setup:
+    <ul>
+      <li>Initialized the network with random weights.</li>
+      <li>Used a dataset of pre-labeled block images for initial training.</li>
+      <li>The testing dataset was comprised on segmented block images collected while developing the other software features.</li>
+      <li>Above are some examples of the segmented images collected and used for training.</li>
+    </ul>
+  </li>
+  <li>Data Augmentation:
+    <ul>
+      <li>Implemented rotations (0°, 90°, 180°, 270°) and mirroring to expand the dataset.</li>
+    </ul>
+  </li>
+  <li>Training Approach:
+    <ul>
+      <li>Trained for a fixed number of iterations (10) using all available pre-training data.</li>
+      <li>Implemented early stopping based on validation performance to prevent overfitting.</li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>Integration of Pre-training and Online Learning</strong></p>
+
+<ol>
+  <li>Seamless Transition:
+    <ul>
+      <li>The pre-trained model served as the starting point for online learning.</li>
+      <li>Online learning began immediately after starting the task, allowing for continuous improvement.</li>
+    </ul>
+  </li>
+  <li>Adaptive Behavior:
+    <ul>
+      <li>The system could switch between using pre-trained knowledge and newly acquired information.</li>
+      <li>Confidence thresholds determined when to rely on pre-trained knowledge vs. seeking new input.</li>
+    </ul>
+  </li>
+  <li>Performance Optimization:
+    <ul>
+      <li>Used PyTorch’s JIT compilation for faster inference in both pre-trained and online-updated models.</li>
+      <li>Implemented asynchronous processing to minimize impact on real-time control loop.</li>
+    </ul>
+  </li>
+  <li>Robustness Enhancements:
+    <ul>
+      <li>Incorporated dropout layers to prevent overfitting in both pre-training and online learning phases.</li>
+      <li>The rolling buffer in online learning helped maintain a balance between old and new knowledge.</li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>Network Architecture</strong></p>
+
+<ul>
+  <li>Designed a compact CNN using PyTorch, optimized for real-time inference.</li>
+  <li>Architecture: 2 convolutional layers, max pooling, 2 fully connected layers, and a sigmoid output.</li>
+  <li>Input: 128x128x3 RGB images, Output: Binary classification (0 or 1).</li>
+</ul>
+
+<p>This integrated approach allowed the robot to start with a baseline understanding of block classification from pre-training and continuously improve and adapt its model based on new experiences and human feedback during operation. The seamless integration with ROS2 enabled efficient interaction between the learning system and the robotic control architecture, making the system both adaptive and responsive to new sorting criteria or environmental changes.</p>
+
+<h3 id="sorting-process">Sorting Process</h3>
+
+<p>I leveraged MoveIt to control the Franka Panda robot arm to manipulate the blocks. The custom C++ node interfaced with MoveIt to manage complex arm movements and gripper actions. Here’s a detailed breakdown of the implementation:</p>
+
+<ol>
+  <li>MoveIt Integration:
+    <ul>
+      <li>Utilized MoveIt’s C++ API to create a MoveGroupInterface for the Franka Panda arm.</li>
+      <li>Implemented collision-aware motion planning using MoveIt’s PlanningSceneInterface.</li>
+      <li>Set up custom planning parameters including planning time, velocity scaling, and acceleration scaling.</li>
+    </ul>
+  </li>
+  <li>Block Scanning and Detection:
+    <ul>
+      <li>Defined an “overhead_scan_pose” for the initial block detection phase.</li>
+      <li>Used MoveIt to plan and execute a trajectory to this pose.</li>
+      <li>Triggered the computer vision system to detect and localize blocks.</li>
+    </ul>
+  </li>
+  <li>Pick Operation:
+    <ul>
+      <li>Moved to a pre-grasp pose slightly above each detected block.</li>
+      <li>Planned and executed a linear motion to the grasp pose.</li>
+      <li>Closed the Franka gripper using a custom ROS2 action client.</li>
+      <li>Planned and executed a linear motion upwards to lift the block.</li>
+      <li>Place operations essentially follow the opposite procedure.</li>
+    </ul>
+  </li>
+  <li>Sort Decision:
+    <ul>
+      <li>While holding the block, moved to a “decision pose” for better imaging.</li>
+      <li>Triggered the neural network for classification via a ROS2 service call.</li>
+      <li>Based on the classification result, determined the target pile for placement.</li>
+      <li>Implemented low-confidence handling, where human input was requested for uncertain classifications.</li>
+    </ul>
+  </li>
+  <li>Collision Avoidance:
+    <ul>
+      <li>Dynamically updated the planning scene with placed blocks as collision objects.</li>
+      <li>Implemented custom collision checking for the gripper when approaching blocks.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>The full sorting process followed this sequence:</p>
+<ol>
+  <li>Initial scan of the workspace.</li>
+  <li>Select the next unsorted block.</li>
+  <li>Plan and execute pick operation.</li>
+  <li>Move to classification pose and get neural network prediction.</li>
+  <li>Plan and execute place operation based on classification.</li>
+  <li>Update planning scene with new block position.</li>
+  <li>Repeat until all detected blocks are sorted, then wait for new blocks to be introduced.</li>
+</ol>
+
+<p>This implementation demonstrated the powerful integration of MoveIt’s planning capabilities with the Franka Panda’s precise control, enabling robust and adaptive sorting behavior. The system successfully handled variations in block positions, adapted to dynamic environment changes, and integrated seamlessly with the perception and learning components of the project.</p>
+
+<h3 id="conclusion-and-future-work">Conclusion and Future Work</h3>
+
+<p>This project successfully integrated robotics, computer vision, and machine learning to create an adaptive block sorting system. The system’s ability to learn and adapt to new sorting criteria, demonstrates potential for intelligent automation in industrial and research settings.</p>
+
+<p>This project represents the first portion of my MSR final project. Future work could/will include:</p>
+
+<ol>
+  <li>Extending the system to handle a wider variety of objects with more complex shapes and materials, perhaps using an object detection model or vision-language-action model.</li>
+  <li>Implementing more advanced reinforcement learning algorithms to further improve adaptability and efficiency.</li>
+  <li>Exploring collaborative scenarios where the robot works alongside humans, incorporating safety features and intuitive interaction methods.</li>
+  <li>Integrating additional sensor data into the machine learning system.</li>
+</ol>
+
+<p>By combining adaptive learning with precise robotic control, this project laid the groundwork for more intelligent and versatile automation systems. The potential applications span various industries, from manufacturing and logistics to healthcare and beyond.</p>
+
+<p class="text-center">
+<a class="m-1 btn btn-outline-primary btn-2 " href="https://github.com/scferro/franka_human_interaction">
   GitHub
 </a>
-</p> -->
+</p>
 
 </div>
   </main>
