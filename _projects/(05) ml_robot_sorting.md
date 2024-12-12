@@ -8,8 +8,6 @@ description: Created ROS 2 packages to control a robot arm to sort blocks based 
 # Robot Arm Sorting with Online Learning via Human Interaction
 <br>
 
-THIS POST IS A WORK IN PROGRESS AND WILL BE COMPLETED BY 12.12.2024
-
 
 ### Video Demo
 
