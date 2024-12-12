@@ -137,6 +137,8 @@ For getting sorting feedback, a four way gesture network (the "complex" gesture 
 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/complex_gestures.gif" />
 
+The sensor communicates with the computer via Bluetooth. I created a ROS2 node to interface between the sensor and the ROS systems. The node publishes the sensors data to topics so it can be processed by the network_node for use in gesture predictions.
+
 
 ### Neural Networks for Gesture Control
 
