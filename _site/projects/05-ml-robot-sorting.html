@@ -82,7 +82,9 @@
 <p>THIS POST IS A WORK IN PROGRESS AND WILL BE COMPLETED BY 12.12.2024</p>
 
 <h3 id="video-demo">Video Demo</h3>
-<p>DEMO VIDEO COMING SOON</p>
+
+<iframe width="640" height="360" src="https://www.youtube.com/embed/vQX5OTTouo0?si=qhGnmbUbNAbaH78L" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+<p><br /></p>
 
 <h3 id="overview">Overview</h3>
 
@@ -97,7 +99,7 @@
   <li>Complex gesture network for direct category corrections</li>
 </ol>
 
-<p>This multi-network approach enables fluid human-robot interaction, where users can either confirm the robot’s decisions through gestures or physically move blocks to demonstrate correct categorization. The system continuously learns from these interactions, improving its sorting accuracy while maintaining stable performance. The project demonstrates how combining traditional robotic control with adaptive learning and natural interaction modes can create systems that efficiently learn from and collaborate with human operators.</p>
+<p>This multi-network approach enables fluid human-robot interaction, where users can either confirm the robot’s decisions through gestures or physically move blocks to demonstrate correct sorting. The system continuously learns from these interactions, improving its sorting accuracy over time. The project demonstrates how combining traditional robotic control with adaptive learning and natural interaction modes can create systems that efficiently learn from and collaborate with human operators.</p>
 
 <h3 id="sorting-process-overview">Sorting Process Overview</h3>
 
@@ -165,6 +167,22 @@ The architecture consists of three convolutional layers with batch normalization
   <li>Four-category output using softmax activation</li>
   <li>Learning rate decay (γ=0.98) for stable online learning</li>
   <li>Cross-entropy loss with Adam optimizer</li>
+</ul>
+
+<p><strong>Input</strong>: 128x128x3 RGB images</p>
+
+<p><strong>Convolutional Layers</strong></p>
+<ol>
+  <li>Conv2D(16 filters, 3x3) -&gt; BN -&gt; ReLU -&gt; MaxPool(2x2) -&gt; 64x64x16</li>
+  <li>Conv2D(32 filters, 3x3) -&gt; BN -&gt; ReLU -&gt; MaxPool(2x2) -&gt; 32x32x32</li>
+  <li>Conv2D(64 filters, 3x3) -&gt; BN -&gt; ReLU -&gt; MaxPool(2x2) -&gt; 16x16x64</li>
+</ol>
+
+<p><strong>Output Layers</strong></p>
+<ul>
+  <li>Flatten(16,384) -&gt; Dense(256) -&gt; Dropout(0.5) -&gt; Dense(64) -&gt; Dropout(0.3) -&gt; Dense(4)</li>
+  <li>Softmax activation</li>
+  <li>Learning rate: 0.0001, decay: 0.98</li>
 </ul>
 
 <p><strong>Online Learning System</strong></p>
@@ -257,7 +275,7 @@ The architecture consists of three convolutional layers with batch normalization
 
 <p><strong>Binary Gesture Network (Yes/No)</strong></p>
 <ul>
-  <li>1D convolutional architecture optimized for temporal features</li>
+  <li>1D convolutional architecture</li>
   <li>Two convolutional layers with batch normalization and max pooling</li>
   <li>Three fully connected layers with dropout for robust classification</li>
   <li>Maintains 100-sample buffer for stable training</li>
@@ -265,14 +283,43 @@ The architecture consists of three convolutional layers with batch normalization
   <li>Higher initial learning rate (0.0005) for quick adaptation</li>
 </ul>
 
+<p><strong>Input</strong>: 4 channels x 1000 timepoints (reshaped from 20x50)</p>
+
+<p><strong>Convolutional Layers</strong></p>
+<ol>
+  <li>Conv1D(32 filters, k=5, s=2) -&gt; BN -&gt; ReLU -&gt; MaxPool -&gt; 250 timepoints</li>
+  <li>Conv1D(64 filters, k=5, s=2) -&gt; BN -&gt; ReLU -&gt; MaxPool -&gt; 62 timepoints</li>
+</ol>
+
+<p><strong>Output Layers</strong></p>
+<ul>
+  <li>Flatten(3,968) -&gt; Dense(128) -&gt; Dropout(0.5) -&gt; Dense(32) -&gt; Dropout(0.3) -&gt; Dense(1)</li>
+  <li>Sigmoid activation</li>
+  <li>Learning rate: 0.0005, decay: 0.98</li>
+</ul>
+
 <p><strong>Complex Gesture Network (Multi-Category)</strong></p>
 <ul>
-  <li>Enhanced temporal feature extraction with deeper architecture</li>
   <li>Larger convolutional layers (64 and 128 channels)</li>
   <li>Expanded fully connected layers for multi-class discrimination</li>
   <li>Four-category classification for direct sorting decisions</li>
   <li>Slower learning rate (0.00025) with gentler decay (γ=0.99)</li>
   <li>Enhanced buffer management for multi-class balance</li>
+</ul>
+
+<p><strong>Input</strong>: 4 channels x 1000 timepoints (reshaped from 20x50)</p>
+
+<p><strong>Convolutional Layers</strong></p>
+<ol>
+  <li>Conv1D(64 filters, k=5, s=2) -&gt; BN -&gt; ReLU -&gt; MaxPool -&gt; 250 timepoints</li>
+  <li>Conv1D(128 filters, k=5, s=2) -&gt; BN -&gt; ReLU -&gt; MaxPool -&gt; 62 timepoints</li>
+</ol>
+
+<p><strong>Output Layers</strong></p>
+<ul>
+  <li>Flatten(7,936) -&gt; Dense(256) -&gt; Dropout(0.5) -&gt; Dense(64) -&gt; Dropout(0.3) -&gt; Dense(4)</li>
+  <li>Softmax activation</li>
+  <li>Learning rate: 0.00025, decay: 0.99</li>
 </ul>
 
 <p><strong>Network Integration</strong>
@@ -307,7 +354,7 @@ Both networks operate in parallel during deployment:</p>
   <li><code class="language-plaintext highlighter-rouge">move_to_joints()</code>: Provides direct joint space control for predefined configurations like the home position</li>
   <li><code class="language-plaintext highlighter-rouge">create_collision_box()</code> and <code class="language-plaintext highlighter-rouge">remove_collision_box()</code>: Manage collision objects for blocks and workspace boundaries</li>
   <li><code class="language-plaintext highlighter-rouge">scan_block()</code>: Executes a two-stage scanning motion sequence, first moving to a hover position above the target block, then to a precise scanning pose. This function coordinates with the vision system to update marker information and block dimensions.</li>
-  <li><code class="language-plaintext highlighter-rouge">grab_block()</code>: Implements a multi-stage grasping operation that approaches blocks safely through hover and grasp poses. This function manages gripper control and updates collision tracking to reflect attached objects.</li>
+  <li><code class="language-plaintext highlighter-rouge">grab_block()</code>: Implements a multi-stage grasping operation that approaches blocks through hover and grasp poses. This function manages gripper control and updates collision tracking to reflect attached objects.</li>
   <li><code class="language-plaintext highlighter-rouge">place_in_stack()</code>: Handles the complete block placement sequence, managing stack heights, creating new stacks when needed, and coordinating collision object updates. The function ensures smooth transitions and proper spacing between blocks.</li>
   <li><code class="language-plaintext highlighter-rouge">place_block()</code>: Executes the final placement operation with precise position control and gripper release sequencing. This function includes retreat motions and updates marker positions to maintain accurate workspace representation.</li>
 </ul>
@@ -502,7 +549,7 @@ Both networks operate in parallel during deployment:</p>
   </li>
 </ul>
 
-<p>This node serves as both a training and evaluation tool, allowing training sessions to improve network performance and evaluation of trained networks.</p>
+<p>This node acts as both a training and evaluation tool, enabling training sessions to improve network performance and evaluation of trained networks.</p>
 
 <h3 id="online-training-results">Online Training Results</h3>
 
@@ -543,14 +590,14 @@ Both networks operate in parallel during deployment:</p>
 
 <h3 id="conclusion-and-future-work">Conclusion and Future Work</h3>
 
-<p>This project successfully integrated robotics, computer vision, and machine learning to create an adaptive block sorting system. The system’s ability to learn and adapt to new sorting criteria, demonstrates potential for intelligent automation in industrial settings. Future work on this project could include:</p>
+<p>This project successfully integrated robotics, computer vision, and machine learning to create an adaptive block sorting system. This system features a unique approach to training neural networks online via feedback and interaction with a human operator, as well as interaction between the different networks. The system’s ability to learn and adapt to new sorting criteria, demonstrates potential for intelligent automation in industrial settings. Future work on this project could include:</p>
 
 <ol>
   <li>Extending the system to handle a wider variety of objects with more complex shapes and materials, perhaps using an object detection model or vision-language-action model.</li>
   <li>Implementing more advanced reinforcement learning algorithms to further improve adaptability and efficiency.</li>
 </ol>
 
-<p>By combining adaptive learning with precise robotic control, this project laid the groundwork for more intelligent and versatile automation systems. The potential applications span various industries, from manufacturing and logistics to healthcare and beyond.</p>
+<p>By combining adaptive learning with precise robotic control, this project lays the groundwork for more intelligent automation systems. The potential applications span various industries, from manufacturing and logistics to healthcare and beyond.</p>
 
 <h3 id="acknowledgements">Acknowledgements</h3>
 

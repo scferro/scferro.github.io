@@ -12,8 +12,9 @@ THIS POST IS A WORK IN PROGRESS AND WILL BE COMPLETED BY 12.12.2024
 
 
 ### Video Demo
-DEMO VIDEO COMING SOON
 
+<iframe width="640" height="360" src="https://www.youtube.com/embed/vQX5OTTouo0?si=qhGnmbUbNAbaH78L" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<br>
 
 
 ### Overview
@@ -27,7 +28,7 @@ The system architecture integrates three neural networks:
 2. Binary gesture network for yes/no feedback validation
 3. Complex gesture network for direct category corrections
 
-This multi-network approach enables fluid human-robot interaction, where users can either confirm the robot's decisions through gestures or physically move blocks to demonstrate correct categorization. The system continuously learns from these interactions, improving its sorting accuracy while maintaining stable performance. The project demonstrates how combining traditional robotic control with adaptive learning and natural interaction modes can create systems that efficiently learn from and collaborate with human operators.
+This multi-network approach enables fluid human-robot interaction, where users can either confirm the robot's decisions through gestures or physically move blocks to demonstrate correct sorting. The system continuously learns from these interactions, improving its sorting accuracy over time. The project demonstrates how combining traditional robotic control with adaptive learning and natural interaction modes can create systems that efficiently learn from and collaborate with human operators.
 
 
 ### Sorting Process Overview
@@ -85,6 +86,18 @@ The architecture consists of three convolutional layers with batch normalization
 * Four-category output using softmax activation
 * Learning rate decay (γ=0.98) for stable online learning
 * Cross-entropy loss with Adam optimizer
+
+**Input**: 128x128x3 RGB images
+
+**Convolutional Layers**
+1. Conv2D(16 filters, 3x3) -> BN -> ReLU -> MaxPool(2x2) -> 64x64x16
+2. Conv2D(32 filters, 3x3) -> BN -> ReLU -> MaxPool(2x2) -> 32x32x32  
+3. Conv2D(64 filters, 3x3) -> BN -> ReLU -> MaxPool(2x2) -> 16x16x64
+
+**Output Layers**
+- Flatten(16,384) -> Dense(256) -> Dropout(0.5) -> Dense(64) -> Dropout(0.3) -> Dense(4)
+- Softmax activation
+- Learning rate: 0.0001, decay: 0.98
 
 **Online Learning System**
 * Maintains balanced class buffers (25 samples per category) which are filled in as the robot see and sorts more blocks
@@ -157,20 +170,41 @@ The system implements two complementary gesture networks for human feedback - a 
 * This normalization significantly increased the accuracy of gesture predictions
 
 **Binary Gesture Network (Yes/No)**
-* 1D convolutional architecture optimized for temporal features
+* 1D convolutional architecture
 * Two convolutional layers with batch normalization and max pooling
 * Three fully connected layers with dropout for robust classification
 * Maintains 100-sample buffer for stable training
 * Binary classification with BCE loss
 * Higher initial learning rate (0.0005) for quick adaptation
 
+**Input**: 4 channels x 1000 timepoints (reshaped from 20x50)
+
+**Convolutional Layers**
+1. Conv1D(32 filters, k=5, s=2) -> BN -> ReLU -> MaxPool -> 250 timepoints
+2. Conv1D(64 filters, k=5, s=2) -> BN -> ReLU -> MaxPool -> 62 timepoints
+
+**Output Layers**
+- Flatten(3,968) -> Dense(128) -> Dropout(0.5) -> Dense(32) -> Dropout(0.3) -> Dense(1)
+- Sigmoid activation
+- Learning rate: 0.0005, decay: 0.98
+
 **Complex Gesture Network (Multi-Category)**
-* Enhanced temporal feature extraction with deeper architecture
 * Larger convolutional layers (64 and 128 channels)
 * Expanded fully connected layers for multi-class discrimination
 * Four-category classification for direct sorting decisions
 * Slower learning rate (0.00025) with gentler decay (γ=0.99)
 * Enhanced buffer management for multi-class balance
+
+**Input**: 4 channels x 1000 timepoints (reshaped from 20x50)
+
+**Convolutional Layers**
+1. Conv1D(64 filters, k=5, s=2) -> BN -> ReLU -> MaxPool -> 250 timepoints
+2. Conv1D(128 filters, k=5, s=2) -> BN -> ReLU -> MaxPool -> 62 timepoints
+
+**Output Layers**
+- Flatten(7,936) -> Dense(256) -> Dropout(0.5) -> Dense(64) -> Dropout(0.3) -> Dense(4)
+- Softmax activation
+- Learning rate: 0.00025, decay: 0.99
 
 **Network Integration**
 Both networks operate in parallel during deployment:
@@ -196,7 +230,7 @@ The system integrates with MoveIt through the `MoveGroupInterface` and `Planning
 * `move_to_joints()`: Provides direct joint space control for predefined configurations like the home position
 * `create_collision_box()` and `remove_collision_box()`: Manage collision objects for blocks and workspace boundaries
 * `scan_block()`: Executes a two-stage scanning motion sequence, first moving to a hover position above the target block, then to a precise scanning pose. This function coordinates with the vision system to update marker information and block dimensions.
-* `grab_block()`: Implements a multi-stage grasping operation that approaches blocks safely through hover and grasp poses. This function manages gripper control and updates collision tracking to reflect attached objects.
+* `grab_block()`: Implements a multi-stage grasping operation that approaches blocks through hover and grasp poses. This function manages gripper control and updates collision tracking to reflect attached objects.
 * `place_in_stack()`: Handles the complete block placement sequence, managing stack heights, creating new stacks when needed, and coordinating collision object updates. The function ensures smooth transitions and proper spacing between blocks.
 * `place_block()`: Executes the final placement operation with precise position control and gripper release sequencing. This function includes retreat motions and updates marker positions to maintain accurate workspace representation.
 
@@ -341,7 +375,7 @@ The network_training node provides functionality for testing and training the ne
   4. Human provides correct labels or confirms predictions
   5. Networks update based on feedback
 
-This node serves as both a training and evaluation tool, allowing training sessions to improve network performance and evaluation of trained networks.
+This node acts as both a training and evaluation tool, enabling training sessions to improve network performance and evaluation of trained networks.
 
 
 ### Online Training Results
@@ -385,12 +419,12 @@ Extended Training without Pretraining:
 
 ### Conclusion and Future Work
 
-This project successfully integrated robotics, computer vision, and machine learning to create an adaptive block sorting system. The system's ability to learn and adapt to new sorting criteria, demonstrates potential for intelligent automation in industrial settings. Future work on this project could include:
+This project successfully integrated robotics, computer vision, and machine learning to create an adaptive block sorting system. This system features a unique approach to training neural networks online via feedback and interaction with a human operator, as well as interaction between the different networks. The system's ability to learn and adapt to new sorting criteria, demonstrates potential for intelligent automation in industrial settings. Future work on this project could include:
 
 1. Extending the system to handle a wider variety of objects with more complex shapes and materials, perhaps using an object detection model or vision-language-action model.
 2. Implementing more advanced reinforcement learning algorithms to further improve adaptability and efficiency.
 
-By combining adaptive learning with precise robotic control, this project laid the groundwork for more intelligent and versatile automation systems. The potential applications span various industries, from manufacturing and logistics to healthcare and beyond.
+By combining adaptive learning with precise robotic control, this project lays the groundwork for more intelligent automation systems. The potential applications span various industries, from manufacturing and logistics to healthcare and beyond.
 
 
 ### Acknowledgements
