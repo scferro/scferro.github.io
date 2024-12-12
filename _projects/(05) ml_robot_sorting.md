@@ -189,7 +189,7 @@ The system implements two complementary gesture networks for human feedback - a 
 * Expanded fully connected layers for multi-class discrimination
 * Four-category classification for direct sorting decisions
 * Slower learning rate (0.00025) with gentler decay (γ=0.99)
-* Enhanced buffer management for multi-class balance
+* Buffer management for multi-class balance
 
 **Input**: 4 channels x 1000 timepoints (reshaped from 20x50)
 
