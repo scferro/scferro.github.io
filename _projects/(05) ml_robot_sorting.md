@@ -34,7 +34,6 @@ This multi-network approach enables fluid human-robot interaction, where users c
 The full sorting procedure is summarized in the block diagram below.
 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/final_block_diagram.png" />
-# Interactive Block-Sorting Robot System
 
 1. System Architecture
 * Uses ROS 2 framework with both C++ (robot control) and Python (ML/vision) nodes
