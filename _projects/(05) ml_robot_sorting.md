@@ -98,7 +98,6 @@ The architecture consists of three convolutional layers with batch normalization
 
 **Online Learning System**
 * Maintains balanced class buffers (25 samples per category) which are filled in as the robot see and sorts more blocks
-* Real-time training with performance logging through ROS 2 services
 * State management for correction handling:
   - Caches network and buffer states before training
   - Enables rollback for incorrect predictions
@@ -147,7 +146,7 @@ For getting sorting feedback, a four way gesture network (the "complex" gesture 
 
 <img src="{{ site.url }}{{ site.baseurl }}/assets/complex_gestures.gif" />
 
-The sensor communicates with the computer via Bluetooth. I created a ROS2 node to interface between the sensor and the ROS systems. The node publishes the sensors data to topics so it can be processed by the network_node for use in gesture predictions.
+The sensor communicates with the computer via Bluetooth. I created a ROS 2 node to interface between the sensor and the ROS systems. The node publishes the sensors data to topics so it can be processed by the network_node for use in gesture predictions.
 
 
 ### Neural Networks for Gesture Control
