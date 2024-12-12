@@ -421,6 +421,7 @@ This project successfully integrated robotics, computer vision, and machine lear
 
 1. Extending the system to handle a wider variety of objects with more complex shapes and materials, perhaps using an object detection model or vision-language-action model.
 2. Implementing more advanced reinforcement learning algorithms to further improve adaptability and efficiency.
+3. Improve gesture sorting network to categorize even more gestures and make models more robust between different users. 
 
 By combining adaptive learning with precise robotic control, this project lays the groundwork for more intelligent automation systems. The potential applications span various industries, from manufacturing and logistics to healthcare and beyond.
 
