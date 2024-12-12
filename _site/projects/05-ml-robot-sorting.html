@@ -233,6 +233,8 @@ The architecture consists of three convolutional layers with batch normalization
 
 <p><img src="http://localhost:4000/assets/complex_gestures.gif" /></p>
 
+<p>The sensor communicates with the computer via Bluetooth. I created a ROS2 node to interface between the sensor and the ROS systems. The node publishes the sensors data to topics so it can be processed by the network_node for use in gesture predictions.</p>
+
 <h3 id="neural-networks-for-gesture-control">Neural Networks for Gesture Control</h3>
 
 <p>The system implements two complementary gesture networks for human feedback - a binary network for yes/no feedback and a complex network for direct category selection:</p>
@@ -549,6 +551,10 @@ Both networks operate in parallel during deployment:</p>
 </ol>
 
 <p>By combining adaptive learning with precise robotic control, this project laid the groundwork for more intelligent and versatile automation systems. The potential applications span various industries, from manufacturing and logistics to healthcare and beyond.</p>
+
+<h3 id="acknowledgements">Acknowledgements</h3>
+
+<p>Thanks you to Matt Elwin and to Yayun Du for their guidance and support with this project!</p>
 
 <p class="text-center">
 <a class="m-1 btn btn-outline-primary btn-2 " href="https://github.com/scferro/franka_human_interaction">

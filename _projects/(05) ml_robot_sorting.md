@@ -393,6 +393,10 @@ This project successfully integrated robotics, computer vision, and machine lear
 By combining adaptive learning with precise robotic control, this project laid the groundwork for more intelligent and versatile automation systems. The potential applications span various industries, from manufacturing and logistics to healthcare and beyond.
 
 
+### Acknowledgements
+
+Thanks you to Matt Elwin and to Yayun Du for their guidance and support with this project!
+
 
 <p class="text-center">
 {% include elements/button.html link="https://github.com/scferro/franka_human_interaction" text="GitHub" %}
